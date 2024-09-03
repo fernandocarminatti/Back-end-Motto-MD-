@@ -15,6 +15,7 @@ public class Renter {
     private String name;
     private String cnpj;
     private LocalDate birthDate;
+    private String cnhNumber;
     private String cnhType;
     private String cnhImage;
 
@@ -23,10 +24,11 @@ public class Renter {
 
     public Renter(){};
 
-    public Renter(String name, String cnpj, LocalDate birthDate, String cnhType, String cnhImage) {
+    public Renter(String name, String cnpj, LocalDate birthDate, String cnhNumber, String cnhType, String cnhImage) {
         this.name = name;
         this.cnpj = cnpj;
         this.birthDate = birthDate;
+        this.cnhNumber = cnhNumber;
         this.cnhType = cnhType;
         this.cnhImage = cnhImage;
     }
@@ -53,6 +55,14 @@ public class Renter {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getCnhNumber() {
+        return cnhNumber;
+    }
+
+    public void setCnhNumber(String cnhNumber) {
+        this.cnhNumber = cnhNumber;
     }
 
     public String getCnhType() {

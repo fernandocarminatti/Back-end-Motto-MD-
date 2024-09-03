@@ -12,6 +12,8 @@ public class BikeTransportationVehicle implements TransportationVehicle {
 
     private String year;
     private String model;
+
+    @Column(unique = true)
     private String plateNumber;
 
     @OneToOne

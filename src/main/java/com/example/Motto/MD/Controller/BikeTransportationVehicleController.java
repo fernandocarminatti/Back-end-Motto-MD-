@@ -2,7 +2,6 @@ package com.example.Motto.MD.Controller;
 
 import com.example.Motto.MD.Dto.BikeTransportationVehicleDto;
 import com.example.Motto.MD.Service.BikeTransportationVehicleService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
