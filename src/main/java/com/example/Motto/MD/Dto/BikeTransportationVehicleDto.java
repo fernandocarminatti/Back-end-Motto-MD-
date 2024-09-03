@@ -1,4 +1,13 @@
 package com.example.Motto.MD.Dto;
 
-public record BikeTransportationVehicleDto(String year, String model, String plateNumber) {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record BikeTransportationVehicleDto(
+        @JsonProperty("year")
+        String year,
+        @JsonProperty("model")
+        String model,
+        @JsonProperty("plateNumber")
+        String plateNumber) {
 }
