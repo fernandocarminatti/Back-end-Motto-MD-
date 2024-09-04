@@ -1,6 +1,8 @@
 spring:
   application:
     name: Motto.MD
+  jackson:
+    default-property-inclusion: non_null
 
   datasource:
     url: jdbc:postgresql://DB_HOST:DB_PORT/DB_NAME

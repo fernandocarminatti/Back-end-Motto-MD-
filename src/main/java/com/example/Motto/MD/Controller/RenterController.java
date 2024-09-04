@@ -1,0 +1,43 @@
+package com.example.Motto.MD.Controller;
+
+import com.example.Motto.MD.Dto.RenterSignUpDto;
+import com.example.Motto.MD.Entity.Renter;
+import com.example.Motto.MD.Service.RenterService;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.Optional;
+
+@Controller
+@RequestMapping("/v1/renter")
+public class RenterController {
+
+    RenterService renterService;
+
+    public RenterController(RenterService renterService) {
+        this.renterService = renterService;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createRenter(@RequestBody RenterSignUpDto renterSignUp) {
+        Optional<Renter> optionalRenter = renterService.createRenter(renterSignUp);
+        if(optionalRenter.isEmpty()){
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Renter Already Exists \n}");
+        }
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/renter/" + optionalRenter.get().getId())).body(optionalRenter.get());
+    }
+
+    @GetMapping("/{cnhNumber}")
+    public ResponseEntity<?> getRenterByCnhNumber(@PathVariable String cnhNumber) {
+        Optional<Renter> optionalRenter = Optional.ofNullable(renterService.findByCnhNumber(cnhNumber));
+        if(optionalRenter.isEmpty()){
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+        }
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(optionalRenter.get());
+    }
+
+
+}

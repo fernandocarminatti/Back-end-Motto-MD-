@@ -1,5 +1,6 @@
 package com.example.Motto.MD.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -8,15 +9,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_renter")
 public class Renter {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+    @Column(unique = true, length = 20)
     private String cnpj;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
+    @Column(name="cnh_number", unique = true, length = 9)
     private String cnhNumber;
-    private String cnhType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cnh_type")
+    private CnhType cnhType;
+    @Column(name = "cnh_image")
     private String cnhImage;
 
     @OneToOne
@@ -24,13 +33,17 @@ public class Renter {
 
     public Renter(){};
 
-    public Renter(String name, String cnpj, LocalDate birthDate, String cnhNumber, String cnhType, String cnhImage) {
+    public Renter(String name, String cnpj, LocalDate birthDate, String cnhNumber, CnhType cnhType, String cnhImage) {
         this.name = name;
         this.cnpj = cnpj;
         this.birthDate = birthDate;
         this.cnhNumber = cnhNumber;
         this.cnhType = cnhType;
         this.cnhImage = cnhImage;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -65,11 +78,11 @@ public class Renter {
         this.cnhNumber = cnhNumber;
     }
 
-    public String getCnhType() {
+    public CnhType getCnhType() {
         return cnhType;
     }
 
-    public void setCnhType(String cnhType) {
+    public void setCnhType(CnhType cnhType) {
         this.cnhType = cnhType;
     }
 
