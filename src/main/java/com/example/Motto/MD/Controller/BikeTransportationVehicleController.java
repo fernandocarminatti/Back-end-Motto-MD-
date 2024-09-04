@@ -29,7 +29,7 @@ public class BikeTransportationVehicleController {
         try {
             bikeTransportationVehicleService.createBikeTransportationVehicle(bikeTransportationVehicleDto);
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Duplicate \n}");
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Bike Already Exists \n}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(500)).body("{ \n Error: Internal Server Error \n}");
         }
@@ -49,7 +49,7 @@ public class BikeTransportationVehicleController {
 
     @GetMapping("/{plateNumber}")
     public ResponseEntity<?> getTargetBikeTransportationVehicle(@PathVariable String plateNumber) {
-        Optional<BikeTransportationVehicle> singleBikeTransportationVehicle = Optional.ofNullable(bikeTransportationVehicleService.getBikeTransportationVehicleByPlateNumber(plateNumber.toUpperCase()));
+        Optional<BikeTransportationVehicle> singleBikeTransportationVehicle = Optional.ofNullable(bikeTransportationVehicleService.getBikeTransportationVehicleByPlateNumber(plateNumber));
         if(singleBikeTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
@@ -60,7 +60,7 @@ public class BikeTransportationVehicleController {
     public ResponseEntity<?> updateBikeTransportationVehicle(@PathVariable String plateNumber, @RequestBody UpdateBikeTransportationVehicle updatedPlateNumber) {
         Optional<BikeTransportationVehicle> updatedEntity;
         try {
-            updatedEntity = Optional.ofNullable(bikeTransportationVehicleService.updateBikeTransportationVehicleByPlateNumber(plateNumber.toUpperCase(), updatedPlateNumber));
+            updatedEntity = Optional.ofNullable(bikeTransportationVehicleService.updateBikeTransportationVehicleByPlateNumber(plateNumber, updatedPlateNumber));
             if (updatedEntity.isEmpty()) {
                 return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
             }
@@ -73,11 +73,11 @@ public class BikeTransportationVehicleController {
     @DeleteMapping("/{plateNumber}")
     public ResponseEntity<?> deleteBikeTransportationVehicle(@PathVariable String plateNumber) {
         try {
-            boolean deleted = bikeTransportationVehicleService.deleteBikeTransportationVehicle(plateNumber.toUpperCase());
+            boolean deleted = bikeTransportationVehicleService.deleteBikeTransportationVehicle(plateNumber);
             if(deleted){
                 return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
             }
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Not Found or in a Rental Service \n}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(500)).body("{ \n Error: Internal Server Error \n}");
         }

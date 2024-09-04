@@ -1,6 +1,7 @@
 package com.example.Motto.MD.Entity;
 
 import jakarta.persistence.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "tb_bike_transportation_vehicle")
@@ -73,5 +74,9 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     @Override
     public Renter getRenter() {
         return renter;
+    }
+
+    public boolean isAvailable(){
+        return renter == null;
     }
 }

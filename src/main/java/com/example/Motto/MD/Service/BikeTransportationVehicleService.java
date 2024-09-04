@@ -48,6 +48,11 @@ public class BikeTransportationVehicleService {
     }
 
     public boolean deleteBikeTransportationVehicle(String plateNumber) {
-        return bikeTransportationVehicleRepository.deleteByPlateNumber(plateNumber);
+        Optional<BikeTransportationVehicle> optionalBikeTransportationVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
+        if(optionalBikeTransportationVehicle.isEmpty() || !optionalBikeTransportationVehicle.get().isAvailable()){
+            return false;
+        }
+        bikeTransportationVehicleRepository.delete(optionalBikeTransportationVehicle.get());
+        return true;
     }
 }
