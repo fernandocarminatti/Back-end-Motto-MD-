@@ -19,12 +19,12 @@ public class BikeTransportationVehicleService {
         this.bikeTransportationVehicleRepository = bikeTransportationVehicleRepository;
     }
 
-    public void createBikeTransportationVehicle(BikeTransportationVehicleDto bikeTransportationVehicleDto) throws DataIntegrityViolationException {
+    public BikeTransportationVehicle createBikeTransportationVehicle(BikeTransportationVehicleDto bikeTransportationVehicleDto) throws DataIntegrityViolationException {
         BikeTransportationVehicle bikeTransportationVehicle = new BikeTransportationVehicle(
                 bikeTransportationVehicleDto.manufactureYear(),
                 bikeTransportationVehicleDto.model(),
                 bikeTransportationVehicleDto.plateNumber().toUpperCase());
-        bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
+        return bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
 
     }
 

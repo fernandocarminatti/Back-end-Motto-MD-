@@ -5,12 +5,14 @@ import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
 import com.example.Motto.MD.Entity.BikeTransportationVehicle;
 import com.example.Motto.MD.Service.BikeTransportationVehicleService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,14 +28,15 @@ public class BikeTransportationVehicleController {
 
     @PostMapping
     public ResponseEntity<?> createBikeTransportationVehicle(@RequestBody @Validated BikeTransportationVehicleDto bikeTransportationVehicleDto) {
+        BikeTransportationVehicle bikeTransportationVehicle;
         try {
-            bikeTransportationVehicleService.createBikeTransportationVehicle(bikeTransportationVehicleDto);
+            bikeTransportationVehicle = bikeTransportationVehicleService.createBikeTransportationVehicle(bikeTransportationVehicleDto);
         } catch (DataIntegrityViolationException dataIntegrityViolationException) {
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Bike Already Exists \n}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatusCode.valueOf(500)).body("{ \n Error: Internal Server Error \n}");
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/bike-transportation-vehicle/" + bikeTransportationVehicle.getPlateNumber())).body(bikeTransportationVehicle);
     }
 
     @GetMapping
