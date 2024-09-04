@@ -10,10 +10,11 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String year;
+    @Column(name = "manufacture_year")
+    private String manufactureYear;
     private String model;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true, length = 7)
     private String plateNumber;
 
     @OneToOne
@@ -22,17 +23,21 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     public BikeTransportationVehicle(){};
 
     public BikeTransportationVehicle(String year, String model, String plateNumber) {
-        this.year = year;
+        this.manufactureYear = year;
         this.model = model;
         this.plateNumber = plateNumber;
     }
 
-    public String getYear() {
-        return year;
+    public Long getId() {
+        return id;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public String getManufactureYear() {
+        return manufactureYear;
+    }
+
+    public void setManufactureYear(String manufactureYear) {
+        this.manufactureYear = manufactureYear;
     }
 
     public String getModel() {
@@ -54,7 +59,7 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     @Override
     public String toString() {
         return "BikeTransportationVehicle{" +
-                "year='" + year + '\'' +
+                "year='" + manufactureYear + '\'' +
                 ", model='" + model + '\'' +
                 ", plateNumber='" + plateNumber + '\'' +
                 '}';

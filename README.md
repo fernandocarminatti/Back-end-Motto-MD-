@@ -27,9 +27,10 @@ USUÁRIO:
 - Eu como usuário admin quero consultar as motos existentes na plataforma e conseguir filtrar pela placa.
 - Eu como usuário admin quero modificar uma moto alterando apenas sua placa que foi cadastrado indevidamente
 - Eu como usuário admin quero remover uma moto que foi cadastrado incorretamente, desde que não tenha registro de locações.
-- Eu como usuário entregador quero me cadastrar na plataforma para alugar motos.
 
-ENTREGADOR:
+ ENTREGADOR:
+
+- Eu como usuário entregador quero me cadastrar na plataforma para alugar motos.
 - Os dados do entregador são( identificador, nome, cnpj, data de nascimento, número da CNHh, tipo da CNH, imagemCNH)
 - Os tipos de cnh válidos são A, B ou ambas A+B.
 - O cnpj é único e não pode se repetir.

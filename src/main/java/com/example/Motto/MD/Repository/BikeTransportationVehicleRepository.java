@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BikeTransportationVehicleRepository extends JpaRepository<BikeTransportationVehicle, Long> {
+    BikeTransportationVehicle findByPlateNumber(String plateNumber);
+
+    boolean deleteByPlateNumber(String plateNumber);
+
 }
 
 
