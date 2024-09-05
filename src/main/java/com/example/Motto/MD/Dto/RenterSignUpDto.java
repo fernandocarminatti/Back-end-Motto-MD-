@@ -2,6 +2,7 @@ package com.example.Motto.MD.Dto;
 
 import com.example.Motto.MD.Entity.CnhType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -17,5 +18,5 @@ public record RenterSignUpDto(
         @JsonProperty("cnhType")
         CnhType cnhType,
         @JsonProperty("cnhImage")
-        String cnhImage) {
+        MultipartFile cnhImage) {
 }

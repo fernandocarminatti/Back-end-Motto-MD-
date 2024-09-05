@@ -3,10 +3,12 @@ package com.example.Motto.MD.Controller;
 import com.example.Motto.MD.Dto.RenterSignUpDto;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Service.RenterService;
+import com.example.Motto.MD.Service.Storage.StorageException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.Optional;
@@ -21,13 +23,18 @@ public class RenterController {
         this.renterService = renterService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRenter(@RequestBody RenterSignUpDto renterSignUp) {
-        Optional<Renter> optionalRenter = renterService.createRenter(renterSignUp);
-        if(optionalRenter.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Renter Already Exists \n}");
+    @PostMapping( consumes = "multipart/form-data" )
+    public ResponseEntity<?> createRenter(@ModelAttribute RenterSignUpDto renterSignUp) {
+        try{
+            Optional<Renter> optionalRenter = renterService.createRenter(renterSignUp);
+            if(optionalRenter.isEmpty()){
+                return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Renter Already Exists \n}");
+            }
+            return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/renter/" + optionalRenter.get().getId())).body(optionalRenter.get());
+        } catch(StorageException e){
+            return ResponseEntity.status(HttpStatusCode.valueOf(400)).body("{ \n Error: " + e.getMessage() + " \n}");
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/renter/" + optionalRenter.get().getId())).body(optionalRenter.get());
+
     }
 
     @GetMapping("/{cnhNumber}")
