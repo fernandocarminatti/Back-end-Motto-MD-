@@ -15,7 +15,7 @@ public class Renter {
     private Long id;
 
     private String name;
-    @Column(unique = true, length = 20)
+    @Column(nullable = false, length = 20)
     private String cnpj;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")

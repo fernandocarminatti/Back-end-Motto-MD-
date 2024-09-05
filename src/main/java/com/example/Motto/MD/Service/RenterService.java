@@ -17,23 +17,24 @@ public class RenterService {
     }
 
     public Optional<Renter> createRenter(RenterSignUpDto renterSignUp) {
-        Optional<Renter> renterCheck = Optional.ofNullable(renterRepository.findByCnhNumber(renterSignUp.cnhNumber()));
-        if(renterCheck.isEmpty()){
-            renterCheck = Optional.of(new Renter(
-                    renterSignUp.name(),
-                    renterSignUp.cnpj(),
-                    renterSignUp.birthDate(),
-                    renterSignUp.cnhNumber(),
-                    renterSignUp.cnhType(),
-                    renterSignUp.cnhImage()
-            ));
-            System.out.println(renterSignUp.cnhNumber());
-            return Optional.of(renterRepository.save(renterCheck.get()));
+        boolean renterExistence = renterRepository.checkIfRenterExistsByCnhNumber(renterSignUp.cnhNumber());
+        if(renterExistence){
+            return Optional.empty();
         }
-        return Optional.empty();
+        Renter newRenter = new Renter(
+                renterSignUp.name(),
+                renterSignUp.cnpj(),
+                renterSignUp.birthDate(),
+                renterSignUp.cnhNumber(),
+                renterSignUp.cnhType(),
+                renterSignUp.cnhImage()
+        );
+        renterRepository.save(newRenter);
+        return Optional.of(newRenter);
     }
 
     public Renter findByCnhNumber(String cnhNumber) {
         return renterRepository.findByCnhNumber(cnhNumber);
     }
+
 }
