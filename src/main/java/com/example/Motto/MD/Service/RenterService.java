@@ -1,10 +1,14 @@
 package com.example.Motto.MD.Service;
 
 import com.example.Motto.MD.Dto.RenterSignUpDto;
+import com.example.Motto.MD.Entity.CnhType;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Repository.RenterRepository;
 import com.example.Motto.MD.Service.Storage.StorageService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -29,9 +33,9 @@ public class RenterService {
         Renter newRenter = new Renter(
                 renterSignUp.name(),
                 renterSignUp.cnpj(),
-                renterSignUp.birthDate(),
+                LocalDate.parse(renterSignUp.birthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 renterSignUp.cnhNumber(),
-                renterSignUp.cnhType(),
+                CnhType.valueOf(renterSignUp.cnhType().toUpperCase()),
                 fileUploadPath
         );
         renterRepository.save(newRenter);

@@ -1,4 +1,4 @@
-package com.example.Motto.MD.Service.Storage;
+package com.example.Motto.MD.Exceptions;
 
 public class StorageException extends RuntimeException {
 

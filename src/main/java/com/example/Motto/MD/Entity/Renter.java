@@ -2,7 +2,6 @@ package com.example.Motto.MD.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -15,11 +14,12 @@ public class Renter {
     private Long id;
 
     private String name;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 18)
     private String cnpj;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
     @Column(name="cnh_number", unique = true, length = 9)
     private String cnhNumber;
     @Enumerated(EnumType.STRING)

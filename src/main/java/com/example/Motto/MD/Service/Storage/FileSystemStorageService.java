@@ -1,7 +1,7 @@
 package com.example.Motto.MD.Service.Storage;
 
+import com.example.Motto.MD.Exceptions.StorageException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
