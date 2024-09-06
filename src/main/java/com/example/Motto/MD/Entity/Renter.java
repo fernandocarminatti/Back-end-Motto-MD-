@@ -19,7 +19,6 @@ public class Renter {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")
     private LocalDate birthDate;
-
     @Column(name="cnh_number", unique = true, length = 9)
     private String cnhNumber;
     @Enumerated(EnumType.STRING)

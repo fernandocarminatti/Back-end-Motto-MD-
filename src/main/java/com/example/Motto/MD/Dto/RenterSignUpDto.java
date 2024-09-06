@@ -30,5 +30,6 @@ public record RenterSignUpDto(
         @Size(min = 1, max = 2, message = "CNH Type must be A, B or AB.")
         String cnhType,
         @JsonProperty("cnhImage")
+        @NotNull(message = "CNH Image is required. Supported formats are jpg and bmp.")
         MultipartFile cnhImage) {
 }
