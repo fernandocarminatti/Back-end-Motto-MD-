@@ -1,6 +1,5 @@
 package com.example.Motto.MD.Entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,7 +17,6 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     @Column(nullable = false, unique = true, length = 7)
     private String plateNumber;
 
-    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     Renter renter;
 

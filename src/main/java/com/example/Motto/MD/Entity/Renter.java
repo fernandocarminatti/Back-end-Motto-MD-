@@ -29,7 +29,6 @@ public class Renter {
     @Column(name = "cnh_image")
     private String cnhImage;
 
-    @JsonBackReference
     @OneToOne(cascade = CascadeType.ALL)
     private BikeTransportationVehicle bikeTransportationVehicle;
 

@@ -1,5 +1,6 @@
 package com.example.Motto.MD.Service;
 
+import com.example.Motto.MD.Dto.BikeResponseDto;
 import com.example.Motto.MD.Dto.BikeTransportationVehicleDto;
 import com.example.Motto.MD.Dto.SetBikeRenterDto;
 import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BikeTransportationVehicleService {
@@ -22,7 +24,7 @@ public class BikeTransportationVehicleService {
         this.renterService = renterService;
     }
 
-    public Optional<BikeTransportationVehicle> createBikeTransportationVehicle(BikeTransportationVehicleDto bikeTransportationVehicleDto)  {
+    public Optional<BikeResponseDto> createBikeTransportationVehicle(BikeTransportationVehicleDto bikeTransportationVehicleDto)  {
         boolean bikeChecker = bikeTransportationVehicleRepository.checkIfBikeTransportationVehicleExistsByPlateNumber(bikeTransportationVehicleDto.plateNumber());
         if(bikeChecker){
             return Optional.empty();
@@ -32,24 +34,27 @@ public class BikeTransportationVehicleService {
                 bikeTransportationVehicleDto.model(),
                 bikeTransportationVehicleDto.plateNumber().toUpperCase());
         bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
-        return Optional.of(bikeTransportationVehicle);
+        return Optional.of(BikeResponseDto.fromEntity(bikeTransportationVehicle));
     }
 
-    public List<BikeTransportationVehicle> getAllBikeTransportationVehicles() {
-        return bikeTransportationVehicleRepository.findAll();
+    public List<BikeResponseDto> getAllBikeTransportationVehicles() {
+        List<BikeTransportationVehicle> allBikeTransportationVehicles = bikeTransportationVehicleRepository.findAll();
+        return allBikeTransportationVehicles.stream().map(BikeResponseDto::fromEntity).collect(Collectors.toList());
     }
 
-    public Optional<BikeTransportationVehicle> getBikeTransportationVehicleByPlateNumber(String plateNumber) {
-            return Optional.of(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
+    public Optional<BikeResponseDto> getBikeTransportationVehicleByPlateNumber(String plateNumber) {
+            return Optional.of(BikeResponseDto.fromEntity(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber)));
     }
 
-    public Optional<BikeTransportationVehicle> updateBikeTransportationVehicleByPlateNumber(String plateNumber, UpdateBikeTransportationVehicle updatedBikeTransportationVehicle) {
+    public Optional<BikeResponseDto> updateBikeTransportationVehicleByPlateNumber(String plateNumber, UpdateBikeTransportationVehicle updatedBikeTransportationVehicle) {
         Optional<BikeTransportationVehicle> optionalBikeTransportationVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
         if(optionalBikeTransportationVehicle.isEmpty()){
             return Optional.empty();
         }
         optionalBikeTransportationVehicle.get().setPlateNumber(updatedBikeTransportationVehicle.plateNumber().toUpperCase());
-        return optionalBikeTransportationVehicle;
+        bikeTransportationVehicleRepository.save(optionalBikeTransportationVehicle.get());
+
+        return Optional.of(BikeResponseDto.fromEntity(optionalBikeTransportationVehicle.get()));
     }
 
     public boolean deleteBikeTransportationVehicle(String plateNumber) {
@@ -61,7 +66,7 @@ public class BikeTransportationVehicleService {
         return true;
     }
 
-    public Optional<BikeTransportationVehicle> setRenter(String plateNumber, SetBikeRenterDto setBikeRenterDto) {
+    public Optional<BikeResponseDto> setRenter(String plateNumber, SetBikeRenterDto setBikeRenterDto) {
         Optional<BikeTransportationVehicle> bikeTranspVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
         Optional<Renter> renter = renterService.findByCnhNumber(setBikeRenterDto.renterCnhNumber());
         if(bikeTranspVehicle.isEmpty() || renter.isEmpty()){
@@ -69,10 +74,10 @@ public class BikeTransportationVehicleService {
         }
         bikeTranspVehicle.get().setRenter(renter.get());
         bikeTransportationVehicleRepository.save(bikeTranspVehicle.get());
-        return bikeTranspVehicle;
+        return Optional.of(BikeResponseDto.fromEntity(bikeTranspVehicle.get()));
     }
 
-    public Optional<BikeTransportationVehicle> returnBikeTransportationVehicle(String plateNumber) {
+    public Optional<BikeResponseDto> returnBikeTransportationVehicle(String plateNumber) {
         boolean bikeChecker = bikeTransportationVehicleRepository.checkIfBikeTransportationVehicleExistsByPlateNumber(plateNumber);
         if(!bikeChecker){
             return Optional.empty();
@@ -80,6 +85,6 @@ public class BikeTransportationVehicleService {
         BikeTransportationVehicle bikeTransportationVehicle = bikeTransportationVehicleRepository.findByPlateNumber(plateNumber);
         bikeTransportationVehicle.setRenter(null);
         bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
-        return Optional.of(bikeTransportationVehicle);
+        return Optional.of(BikeResponseDto.fromEntity(bikeTransportationVehicle));
     }
 }
