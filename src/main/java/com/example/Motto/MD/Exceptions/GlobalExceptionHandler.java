@@ -32,15 +32,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(errorsReturn);
     }
 
-    @ExceptionHandler(SignUpException.class)
-    protected ResponseEntity<Map<String, Object>> handleSignUpException(SignUpException e) {
-        Map<String, Object> errorsReturn = new HashMap<>();
-        List<String> errorList = new ArrayList<>();
-        errorList.add(e.getMessage());
-        errorsReturn.put("Reasons: ", errorList);
-        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(errorsReturn);
-    }
-
     @ExceptionHandler(StorageException.class)
     protected ResponseEntity<Map<String, Object>> handleStorageException(StorageException e) {
         Map<String, Object> errorsReturn = new HashMap<>();
@@ -60,10 +51,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatusCode.valueOf(413)).body(e.getMessage());
     }
 
-    @ExceptionHandler(BikeTransportationVehicleException.class)
-    protected ResponseEntity<String> handleBikeTransportationVehicleException(BikeTransportationVehicleException e) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(409))
-                .location(URI.create("/v1/bike-transportation-vehicle/" + e.getPath()))
-                .body(e.getMessage());
-    }
 }
