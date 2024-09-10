@@ -2,6 +2,7 @@ package com.example.Motto.MD.Service;
 
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
 import com.example.Motto.MD.Dto.RenterSignUpDto;
+import com.example.Motto.MD.Entity.BikeTransportationVehicle;
 import com.example.Motto.MD.Entity.CnhType;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Repository.RenterRepository;
@@ -55,5 +56,4 @@ public class RenterService {
         renterRepository.save(renter.get());
         return renter;
     }
-
 }

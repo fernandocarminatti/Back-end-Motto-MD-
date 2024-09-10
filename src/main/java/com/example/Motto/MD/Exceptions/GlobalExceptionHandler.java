@@ -6,6 +6,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.ArrayList;
@@ -47,6 +48,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     protected ResponseEntity<String> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         return ResponseEntity.status(HttpStatusCode.valueOf(413)).body(e.getMessage());
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatusCode.valueOf(500)).body(e.getMessage());
     }
 
 }

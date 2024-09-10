@@ -1,5 +1,6 @@
 package com.example.Motto.MD.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -28,7 +29,8 @@ public class Renter {
     @Column(name = "cnh_image")
     private String cnhImage;
 
-    @OneToOne
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
     private BikeTransportationVehicle bikeTransportationVehicle;
 
     public Renter(){};
