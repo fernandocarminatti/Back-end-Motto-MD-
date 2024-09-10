@@ -5,7 +5,7 @@ import com.example.Motto.MD.Entity.Renter;
 
 import java.util.Map;
 
-public record RenterResponseDto(long id, String name, String location, Map<String, Object> bikeData) {
+public record RenterResponseDto(long id, String name, String CnhNumber, String CnhImage, Map<String, Object> bikeData) {
 
     public static RenterResponseDto fromEntity(Renter renter) {
         Map<String, Object> bikeData;
@@ -20,7 +20,8 @@ public record RenterResponseDto(long id, String name, String location, Map<Strin
         return new RenterResponseDto(
                 renter.getId(),
                 renter.getName(),
-                "/v1/renter/" + renter.getCnhNumber(),
+                renter.getCnhNumber(),
+                renter.getCnhImage(),
                 bikeData
         );
     }

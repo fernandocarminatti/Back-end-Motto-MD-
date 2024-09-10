@@ -1,7 +1,7 @@
 package com.example.Motto.MD.Service;
 
 import com.example.Motto.MD.Dto.BikeResponseDto;
-import com.example.Motto.MD.Dto.BikeTransportationVehicleDto;
+import com.example.Motto.MD.Dto.BikeVehicleSignUpDto;
 import com.example.Motto.MD.Dto.SetBikeRenterDto;
 import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
 import com.example.Motto.MD.Entity.BikeTransportationVehicle;
@@ -24,15 +24,15 @@ public class BikeTransportationVehicleService {
         this.renterService = renterService;
     }
 
-    public Optional<BikeResponseDto> createBikeTransportationVehicle(BikeTransportationVehicleDto bikeTransportationVehicleDto)  {
-        boolean bikeChecker = bikeTransportationVehicleRepository.checkIfBikeTransportationVehicleExistsByPlateNumber(bikeTransportationVehicleDto.plateNumber());
+    public Optional<BikeResponseDto> createBikeTransportationVehicle(BikeVehicleSignUpDto bikeVehicleSignUpDto)  {
+        boolean bikeChecker = bikeTransportationVehicleRepository.checkIfBikeTransportationVehicleExistsByPlateNumber(bikeVehicleSignUpDto.plateNumber());
         if(bikeChecker){
             return Optional.empty();
         }
         BikeTransportationVehicle bikeTransportationVehicle = new BikeTransportationVehicle(
-                bikeTransportationVehicleDto.manufactureYear(),
-                bikeTransportationVehicleDto.model(),
-                bikeTransportationVehicleDto.plateNumber().toUpperCase());
+                bikeVehicleSignUpDto.manufactureYear(),
+                bikeVehicleSignUpDto.model(),
+                bikeVehicleSignUpDto.plateNumber().toUpperCase());
         bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
         return Optional.of(BikeResponseDto.fromEntity(bikeTransportationVehicle));
     }
@@ -68,10 +68,11 @@ public class BikeTransportationVehicleService {
 
     public Optional<BikeResponseDto> setRenter(String plateNumber, SetBikeRenterDto setBikeRenterDto) {
         Optional<BikeTransportationVehicle> bikeTranspVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
-        Optional<Renter> renter = renterService.findByCnhNumber(setBikeRenterDto.renterCnhNumber());
+        Optional<Renter> renter = renterService.getRenterFullDataByCnhNumber(setBikeRenterDto.renterCnhNumber());
         if(bikeTranspVehicle.isEmpty() || renter.isEmpty()){
             return Optional.empty();
         }
+        renter.get().setBikeTransportationVehicle(bikeTranspVehicle.get());
         bikeTranspVehicle.get().setRenter(renter.get());
         bikeTransportationVehicleRepository.save(bikeTranspVehicle.get());
         return Optional.of(BikeResponseDto.fromEntity(bikeTranspVehicle.get()));
@@ -83,6 +84,7 @@ public class BikeTransportationVehicleService {
             return Optional.empty();
         }
         BikeTransportationVehicle bikeTransportationVehicle = bikeTransportationVehicleRepository.findByPlateNumber(plateNumber);
+        bikeTransportationVehicle.getRenter().setBikeTransportationVehicle(null);
         bikeTransportationVehicle.setRenter(null);
         bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
         return Optional.of(BikeResponseDto.fromEntity(bikeTransportationVehicle));

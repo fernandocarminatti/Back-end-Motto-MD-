@@ -17,7 +17,7 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     @Column(nullable = false, unique = true, length = 7)
     private String plateNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     Renter renter;
 
     public BikeTransportationVehicle(){};

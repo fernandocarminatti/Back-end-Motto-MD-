@@ -1,8 +1,8 @@
 package com.example.Motto.MD.Service;
 
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
+import com.example.Motto.MD.Dto.RenterResponseDto;
 import com.example.Motto.MD.Dto.RenterSignUpDto;
-import com.example.Motto.MD.Entity.BikeTransportationVehicle;
 import com.example.Motto.MD.Entity.CnhType;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Repository.RenterRepository;
@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RenterService {
@@ -24,7 +26,7 @@ public class RenterService {
         this.storageService = storageService;
     }
 
-    public Optional<Renter> createRenter(RenterSignUpDto renterSignUp) {
+    public Optional<RenterResponseDto> createRenter(RenterSignUpDto renterSignUp) {
         boolean renter = renterRepository.checkIfRenterExistsByCnhNumber(renterSignUp.cnhNumber());
         if(renter){
             return Optional.empty();
@@ -39,21 +41,44 @@ public class RenterService {
                 fileUploadPath
         );
         renterRepository.save(newRenter);
-        return Optional.of(newRenter);
+        return Optional.of(RenterResponseDto.fromEntity(newRenter));
     }
 
-    public Optional<Renter> findByCnhNumber(String cnhNumber) {
-        return Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
+    public List<RenterResponseDto> getAllRenters() {
+        List<Renter> allRenters = renterRepository.findAll();
+        return allRenters.stream().map(RenterResponseDto::fromEntity).collect(Collectors.toList());
     }
 
-    public Optional<Renter> changeCnhImage(CnhImageExchangeDto cnhImageExchange) {
-        Optional<Renter> renter = findByCnhNumber(cnhImageExchange.cnhNumber());
-        if(renter.isEmpty()){
+    public Optional<RenterResponseDto> findByCnhNumber(String cnhNumber) {
+        Renter renter = renterRepository.findByCnhNumber(cnhNumber);
+        if(renter == null){
             return Optional.empty();
+        }
+        return Optional.of(RenterResponseDto.fromEntity(renter));
+    }
+
+    public Optional<Renter> getRenterFullDataByCnhNumber(String cnhNumber) {
+        return Optional.of(renterRepository.findByCnhNumber(cnhNumber));
+    }
+
+    public Optional<?> changeCnhImage(CnhImageExchangeDto cnhImageExchange) {
+        Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhImageExchange.cnhNumber()));
+        if(renter.isEmpty()){
+            return renter;
         }
         String fileUploadPath = storageService.storeFile(cnhImageExchange.cnhImage().get(0), renter.get().getCnhNumber());
         renter.get().setCnhImage(fileUploadPath);
         renterRepository.save(renter.get());
-        return renter;
+        return Optional.of(RenterResponseDto.fromEntity(renter.get()));
+    }
+
+    public boolean deleteRenter(String cnhNumber) {
+        Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
+        if(renter.isEmpty() || renter.get().hasActiveRental()){
+            return false;
+        } else {
+            renterRepository.delete(renter.get());
+            return true;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.Motto.MD.Controller;
 
 import com.example.Motto.MD.Dto.BikeResponseDto;
-import com.example.Motto.MD.Dto.BikeTransportationVehicleDto;
+import com.example.Motto.MD.Dto.BikeVehicleSignUpDto;
 import com.example.Motto.MD.Dto.SetBikeRenterDto;
 import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
 import com.example.Motto.MD.Service.BikeTransportationVehicleService;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/v1/bike-transportation-vehicle")
+@RequestMapping("/v1/bikes")
 public class BikeTransportationVehicleController {
 
     BikeTransportationVehicleService bikeTransportationVehicleService;
@@ -26,12 +26,12 @@ public class BikeTransportationVehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBikeTransportationVehicle(@RequestBody @Validated BikeTransportationVehicleDto bikeTransportationVehicleDto) {
-        Optional<BikeResponseDto> bikeTransportationVehicle = bikeTransportationVehicleService.createBikeTransportationVehicle(bikeTransportationVehicleDto);
+    public ResponseEntity<?> createBikeTransportationVehicle(@RequestBody @Validated BikeVehicleSignUpDto bikeVehicleSignUpDto) {
+        Optional<BikeResponseDto> bikeTransportationVehicle = bikeTransportationVehicleService.createBikeTransportationVehicle(bikeVehicleSignUpDto);
         if(bikeTransportationVehicle.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/v1/bike-transportation-vehicle/" + bikeTransportationVehicleDto.plateNumber())).body("{ \n Error: Bike Transportation Vehicle already exists \n}");
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/v1/bikes/" + bikeVehicleSignUpDto.plateNumber())).body("{ \n Error: Bike Transportation Vehicle already exists \n}");
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/bike-transportation-vehicle/" + bikeTransportationVehicleDto.plateNumber())).body(bikeTransportationVehicle.get());
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/bikes/" + bikeVehicleSignUpDto.plateNumber())).body(bikeTransportationVehicle.get());
     }
 
     @GetMapping
@@ -58,7 +58,7 @@ public class BikeTransportationVehicleController {
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(updatedEntity.get());
     }
 
-    @DeleteMapping("/{plateNumber}")
+    @DeleteMapping("/{plateNumber}/remove")
     public ResponseEntity<?> deleteBikeTransportationVehicle(@PathVariable String plateNumber) {
         boolean deleted = bikeTransportationVehicleService.deleteBikeTransportationVehicle(plateNumber);
         if(deleted){
