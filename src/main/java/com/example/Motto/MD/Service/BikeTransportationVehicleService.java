@@ -43,7 +43,11 @@ public class BikeTransportationVehicleService {
     }
 
     public Optional<BikeResponseDto> getBikeTransportationVehicleByPlateNumber(String plateNumber) {
-            return Optional.of(BikeResponseDto.fromEntity(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber)));
+        Optional<BikeTransportationVehicle> optionalBikeTransportationVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
+        if(optionalBikeTransportationVehicle.isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(BikeResponseDto.fromEntity(optionalBikeTransportationVehicle.get()));
     }
 
     public Optional<BikeResponseDto> updateBikeTransportationVehicleByPlateNumber(String plateNumber, UpdateBikeTransportationVehicle updatedBikeTransportationVehicle) {
