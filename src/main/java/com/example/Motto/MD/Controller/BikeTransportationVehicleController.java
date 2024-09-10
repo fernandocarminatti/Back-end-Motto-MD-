@@ -5,8 +5,6 @@ import com.example.Motto.MD.Dto.SetBikeRenterDto;
 import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
 import com.example.Motto.MD.Entity.BikeTransportationVehicle;
 import com.example.Motto.MD.Service.BikeTransportationVehicleService;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -72,6 +70,15 @@ public class BikeTransportationVehicleController {
     @PostMapping("/{plateNumber}/rent")
     public ResponseEntity<BikeTransportationVehicle> setRenter(@PathVariable String plateNumber,@RequestBody SetBikeRenterDto setBikeRenterDto) {
         Optional<BikeTransportationVehicle> bikeTransportationVehicle = bikeTransportationVehicleService.setRenter(plateNumber, setBikeRenterDto);
+        if(bikeTransportationVehicle.isEmpty()){
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+        }
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(bikeTransportationVehicle.get());
+    }
+
+    @PostMapping("/{plateNumber}/return")
+    public ResponseEntity<?> returnBikeTransportationVehicle(@PathVariable String plateNumber) {
+        Optional<BikeTransportationVehicle> bikeTransportationVehicle = bikeTransportationVehicleService.returnBikeTransportationVehicle(plateNumber);
         if(bikeTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }

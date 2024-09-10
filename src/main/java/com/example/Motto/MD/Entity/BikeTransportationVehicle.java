@@ -1,7 +1,6 @@
 package com.example.Motto.MD.Entity;
 
 import jakarta.persistence.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Table(name = "tb_bike_transportation_vehicle")
@@ -18,7 +17,7 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     @Column(nullable = false, unique = true, length = 7)
     private String plateNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Renter renter;
 
     public BikeTransportationVehicle(){};

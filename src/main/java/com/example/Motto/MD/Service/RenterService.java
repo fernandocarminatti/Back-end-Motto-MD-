@@ -1,10 +1,9 @@
 package com.example.Motto.MD.Service;
 
-import com.example.Motto.MD.Dto.RenterSignUpDto;
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
+import com.example.Motto.MD.Dto.RenterSignUpDto;
 import com.example.Motto.MD.Entity.CnhType;
 import com.example.Motto.MD.Entity.Renter;
-import com.example.Motto.MD.Exceptions.StorageException;
 import com.example.Motto.MD.Repository.RenterRepository;
 import com.example.Motto.MD.Service.Storage.StorageService;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class RenterService {
                 renterSignUp.cnpj(),
                 LocalDate.parse(renterSignUp.birthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 renterSignUp.cnhNumber(),
-                CnhType.valueOf(renterSignUp.cnhType().toUpperCase()),
+                CnhType.valueOf(renterSignUp.cnhType().toString().toUpperCase()),
                 fileUploadPath
         );
         renterRepository.save(newRenter);

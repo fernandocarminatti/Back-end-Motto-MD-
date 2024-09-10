@@ -71,4 +71,15 @@ public class BikeTransportationVehicleService {
         bikeTransportationVehicleRepository.save(bikeTranspVehicle.get());
         return bikeTranspVehicle;
     }
+
+    public Optional<BikeTransportationVehicle> returnBikeTransportationVehicle(String plateNumber) {
+        boolean bikeChecker = bikeTransportationVehicleRepository.checkIfBikeTransportationVehicleExistsByPlateNumber(plateNumber);
+        if(!bikeChecker){
+            return Optional.empty();
+        }
+        BikeTransportationVehicle bikeTransportationVehicle = bikeTransportationVehicleRepository.findByPlateNumber(plateNumber);
+        bikeTransportationVehicle.setRenter(null);
+        bikeTransportationVehicleRepository.save(bikeTransportationVehicle);
+        return Optional.of(bikeTransportationVehicle);
+    }
 }

@@ -11,7 +11,7 @@ public interface BikeTransportationVehicleRepository extends JpaRepository<BikeT
 
     boolean deleteByPlateNumber(String plateNumber);
 
-    @Query(nativeQuery = true, value = "SELECT CASE WHEN COUNT(tv.id) > 0 THEN true ELSE false END FROM tb_bike_transportation_vehicle tv WHERE tv.plateNumber = ?1")
+    @Query(nativeQuery = true, value = "SELECT CASE WHEN COUNT(tv.id) > 0 THEN true ELSE false END FROM tb_bike_transportation_vehicle tv WHERE tv.plate_number = ?1")
     boolean checkIfBikeTransportationVehicleExistsByPlateNumber(String cnhNumber);
 }
 

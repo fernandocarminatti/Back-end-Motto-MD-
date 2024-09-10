@@ -1,7 +1,7 @@
 package com.example.Motto.MD.Controller;
 
-import com.example.Motto.MD.Dto.RenterSignUpDto;
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
+import com.example.Motto.MD.Dto.RenterSignUpDto;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Service.RenterService;
 import jakarta.validation.Valid;
@@ -33,7 +33,7 @@ public class RenterController {
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(201))
                 .location(URI.create("/v1/renter/" + renter.get().getCnhNumber()))
-                .body(renter);
+                .body(renter.get());
     }
 
     @GetMapping("/{cnhNumber}")
@@ -42,7 +42,7 @@ public class RenterController {
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(renter);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(renter.get());
     }
 
     @PostMapping("/{cnhNumber}/update-cnh-image")
@@ -51,7 +51,7 @@ public class RenterController {
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(renter);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(renter.get());
     }
 
 }
