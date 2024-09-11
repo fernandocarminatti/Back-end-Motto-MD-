@@ -53,8 +53,8 @@ public class RenterController {
     }
 
     @PostMapping("/{cnhNumber}/update-cnh-image")
-    public ResponseEntity<?> changeCnhImage(@Valid @ModelAttribute CnhImageExchangeDto cnhImageExchange) {
-        Optional<?> renter = renterService.changeCnhImage(cnhImageExchange);
+    public ResponseEntity<?> changeCnhImage(@PathVariable String cnhNumber, @Valid @ModelAttribute CnhImageExchangeDto cnhImageExchange) {
+        Optional<?> renter = renterService.changeCnhImage(cnhNumber, cnhImageExchange);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }

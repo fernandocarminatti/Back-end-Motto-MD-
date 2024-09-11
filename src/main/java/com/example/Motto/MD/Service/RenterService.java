@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,10 +62,13 @@ public class RenterService {
         return Optional.of(renterRepository.findByCnhNumber(cnhNumber));
     }
 
-    public Optional<?> changeCnhImage(CnhImageExchangeDto cnhImageExchange) {
-        Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhImageExchange.cnhNumber()));
+    public Optional<?> changeCnhImage(String cnhNumber, CnhImageExchangeDto cnhImageExchange) {
+        Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
         if(renter.isEmpty()){
             return renter;
+        }
+        if(renter.get().getCnhImage() != null || Objects.equals(renter.get().getCnhImage(), "")){
+            storageService.deleteFile(renter.get().getCnhImage());
         }
         String fileUploadPath = storageService.storeFile(cnhImageExchange.cnhImage().get(0), renter.get().getCnhNumber());
         renter.get().setCnhImage(fileUploadPath);
