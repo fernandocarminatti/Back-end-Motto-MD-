@@ -1,9 +1,9 @@
 package com.example.Motto.MD.Dto;
 
+import com.example.Motto.MD.Entity.CnhType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,8 +25,7 @@ public record RenterSignUpDto(
         String cnhNumber,
         @JsonProperty("cnhType")
         @NotNull(message = "CNH Type is required.")
-        @Pattern(regexp = "^(A|B|AB)$", message = "CNH Type must be A, B or AB.")
-        String cnhType,
+        CnhType cnhType,
         @JsonProperty("cnhImage")
         @NotNull(message = "CNH Image is required. Supported formats are jpg and bmp.")
         MultipartFile cnhImage) {
