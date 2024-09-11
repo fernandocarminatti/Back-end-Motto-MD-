@@ -37,7 +37,7 @@ public class RenterService {
                 renterSignUp.cnpj(),
                 LocalDate.parse(renterSignUp.birthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 renterSignUp.cnhNumber(),
-                CnhType.valueOf(renterSignUp.cnhType().toString().toUpperCase()),
+                CnhType.valueOf(renterSignUp.cnhType().toUpperCase()),
                 fileUploadPath
         );
         renterRepository.save(newRenter);
