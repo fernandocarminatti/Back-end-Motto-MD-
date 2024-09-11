@@ -1,14 +1,11 @@
 package com.example.Motto.MD.Controller;
 
-import com.example.Motto.MD.Dto.BikeResponseDto;
-import com.example.Motto.MD.Dto.BikeVehicleSignUpDto;
-import com.example.Motto.MD.Dto.SetBikeRenterDto;
-import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
+import com.example.Motto.MD.Dto.*;
 import com.example.Motto.MD.Service.BikeTransportationVehicleService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,7 +23,7 @@ public class BikeTransportationVehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBikeTransportationVehicle(@RequestBody @Validated BikeVehicleSignUpDto bikeVehicleSignUpDto) {
+    public ResponseEntity<?> createBikeTransportationVehicle(@RequestBody @Valid BikeVehicleSignUpDto bikeVehicleSignUpDto) {
         Optional<BikeResponseDto> bikeTransportationVehicle = bikeTransportationVehicleService.createBikeTransportationVehicle(bikeVehicleSignUpDto);
         if(bikeTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/v1/bikes/" + bikeVehicleSignUpDto.plateNumber())).body("{ \n Error: Bike Transportation Vehicle already exists \n}");
@@ -50,7 +47,7 @@ public class BikeTransportationVehicleController {
     }
 
     @PatchMapping("/{plateNumber}")
-    public ResponseEntity<?> updateBikeTransportationVehicle(@PathVariable String plateNumber, @RequestBody UpdateBikeTransportationVehicle updatedPlateNumber) {
+    public ResponseEntity<?> updateBikeTransportationVehicle(@PathVariable String plateNumber,@Valid @RequestBody UpdateBikeTransportationVehicleDto updatedPlateNumber) {
         Optional<BikeResponseDto> updatedEntity = bikeTransportationVehicleService.updateBikeTransportationVehicleByPlateNumber(plateNumber, updatedPlateNumber);
         if (updatedEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
@@ -68,16 +65,19 @@ public class BikeTransportationVehicleController {
     }
 
     @PostMapping("/{plateNumber}/rent")
-    public ResponseEntity<?> setRenter(@PathVariable String plateNumber,@RequestBody SetBikeRenterDto setBikeRenterDto) {
-        Optional<BikeResponseDto> bikeTransportationVehicle = bikeTransportationVehicleService.setRenter(plateNumber, setBikeRenterDto);
+    public ResponseEntity<?> setRenter(@PathVariable String plateNumber,@Valid @RequestBody SetBikeRenterDto setBikeRenterDto) {
+        Optional<?> bikeTransportationVehicle = bikeTransportationVehicleService.setRenter(plateNumber, setBikeRenterDto);
         if(bikeTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
+        }
+        if(bikeTransportationVehicle.get() instanceof BikeOnRentalServiceDto){
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body(bikeTransportationVehicle.get());
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(bikeTransportationVehicle.get());
     }
 
     @PostMapping("/{plateNumber}/return")
-    public ResponseEntity<?> returnBikeTransportationVehicle(@PathVariable String plateNumber) {
+    public ResponseEntity<?> returnBikeTransportationVehicle(@Valid @PathVariable String plateNumber) {
         Optional<BikeResponseDto> bikeTransportationVehicle = bikeTransportationVehicleService.returnBikeTransportationVehicle(plateNumber);
         if(bikeTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();

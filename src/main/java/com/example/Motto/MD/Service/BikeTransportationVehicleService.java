@@ -1,9 +1,6 @@
 package com.example.Motto.MD.Service;
 
-import com.example.Motto.MD.Dto.BikeResponseDto;
-import com.example.Motto.MD.Dto.BikeVehicleSignUpDto;
-import com.example.Motto.MD.Dto.SetBikeRenterDto;
-import com.example.Motto.MD.Dto.UpdateBikeTransportationVehicle;
+import com.example.Motto.MD.Dto.*;
 import com.example.Motto.MD.Entity.BikeTransportationVehicle;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Repository.BikeTransportationVehicleRepository;
@@ -50,7 +47,7 @@ public class BikeTransportationVehicleService {
         return Optional.of(BikeResponseDto.fromEntity(optionalBikeTransportationVehicle.get()));
     }
 
-    public Optional<BikeResponseDto> updateBikeTransportationVehicleByPlateNumber(String plateNumber, UpdateBikeTransportationVehicle updatedBikeTransportationVehicle) {
+    public Optional<BikeResponseDto> updateBikeTransportationVehicleByPlateNumber(String plateNumber, UpdateBikeTransportationVehicleDto updatedBikeTransportationVehicle) {
         Optional<BikeTransportationVehicle> optionalBikeTransportationVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
         if(optionalBikeTransportationVehicle.isEmpty()){
             return Optional.empty();
@@ -70,11 +67,14 @@ public class BikeTransportationVehicleService {
         return true;
     }
 
-    public Optional<BikeResponseDto> setRenter(String plateNumber, SetBikeRenterDto setBikeRenterDto) {
+    public Optional<?> setRenter(String plateNumber, SetBikeRenterDto setBikeRenterDto) {
         Optional<BikeTransportationVehicle> bikeTranspVehicle = Optional.ofNullable(bikeTransportationVehicleRepository.findByPlateNumber(plateNumber));
         Optional<Renter> renter = renterService.getRenterFullDataByCnhNumber(setBikeRenterDto.renterCnhNumber());
         if(bikeTranspVehicle.isEmpty() || renter.isEmpty()){
             return Optional.empty();
+        }
+        if(bikeTranspVehicle.get().getRenter() != null){
+            return Optional.of(BikeOnRentalServiceDto.fromEntity(bikeTranspVehicle.get()));
         }
         renter.get().setBikeTransportationVehicle(bikeTranspVehicle.get());
         bikeTranspVehicle.get().setRenter(renter.get());

@@ -44,7 +44,7 @@ public class RenterController {
     }
 
     @GetMapping("/{cnhNumber}")
-    public ResponseEntity<?> getRenterByCnhNumber(@PathVariable String cnhNumber) {
+    public ResponseEntity<?> getRenterByCnhNumber(@Valid @PathVariable String cnhNumber) {
         Optional<RenterResponseDto> renter = renterService.findByCnhNumber(cnhNumber);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
@@ -62,7 +62,7 @@ public class RenterController {
     }
 
     @DeleteMapping("/{cnhNumber}/remove")
-    public ResponseEntity<?> deleteRenter(@PathVariable String cnhNumber) {
+    public ResponseEntity<?> deleteRenter(@Valid @PathVariable String cnhNumber) {
         boolean deleted = renterService.deleteRenter(cnhNumber);
         if(deleted){
             return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();

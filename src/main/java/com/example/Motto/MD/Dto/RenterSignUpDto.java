@@ -1,6 +1,5 @@
 package com.example.Motto.MD.Dto;
 
-import com.example.Motto.MD.Entity.CnhType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

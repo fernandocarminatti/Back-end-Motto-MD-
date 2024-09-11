@@ -20,7 +20,7 @@ public class Application {
 	@Bean
 	public ObjectMapper objectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+		objectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false);
 		objectMapper.registerModule(new JavaTimeModule());
 		return objectMapper;

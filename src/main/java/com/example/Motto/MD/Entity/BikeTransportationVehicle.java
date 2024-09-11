@@ -14,7 +14,7 @@ public class BikeTransportationVehicle implements TransportationVehicle {
     private String manufactureYear;
     private String model;
 
-    @Column(nullable = false, unique = true, length = 7)
+    @Column(nullable = false, unique = true, length = 8)
     private String plateNumber;
 
     @OneToOne(cascade = CascadeType.PERSIST)

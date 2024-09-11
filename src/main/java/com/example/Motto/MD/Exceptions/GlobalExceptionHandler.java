@@ -2,6 +2,7 @@ package com.example.Motto.MD.Exceptions;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,6 +29,11 @@ public class GlobalExceptionHandler {
         e.getBindingResult().getAllErrors().forEach(error -> errorList.add(error.getDefaultMessage()));
         errorsReturn.put("Reasons: ", errorList);
         return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(errorsReturn);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    private ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(Map.of("Reason: ", "Invalid JSON Structure."));
     }
 
     @ExceptionHandler(StorageException.class)
