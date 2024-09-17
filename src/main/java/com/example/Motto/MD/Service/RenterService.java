@@ -58,10 +58,6 @@ public class RenterService {
         return Optional.of(RenterResponseDto.fromEntity(renter));
     }
 
-    public Optional<Renter> getRenterFullDataByCnhNumber(String cnhNumber) {
-        return Optional.of(renterRepository.findByCnhNumber(cnhNumber));
-    }
-
     public Optional<?> changeCnhImage(String cnhNumber, CnhImageExchangeDto cnhImageExchange) {
         Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
         if(renter.isEmpty()){
@@ -84,5 +80,9 @@ public class RenterService {
             renterRepository.delete(renter.get());
             return true;
         }
+    }
+
+    protected Optional<Renter> getByCnhNumber(String cnhNumber){
+        return Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
     }
 }

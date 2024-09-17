@@ -29,7 +29,7 @@ public class Renter {
     private String cnhImage;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    private BikeTransportationVehicle bikeTransportationVehicle;
+    private TransportationVehicle bikeTransportationVehicle;
 
     public Renter(){};
 
@@ -94,11 +94,11 @@ public class Renter {
         this.cnhImage = cnhImage;
     }
 
-    public BikeTransportationVehicle getBikeTransportationVehicle() {
+    public TransportationVehicle getBikeTransportationVehicle() {
         return bikeTransportationVehicle;
     }
 
-    public void setBikeTransportationVehicle(BikeTransportationVehicle bikeTransportationVehicle) {
+    public void setBikeTransportationVehicle(TransportationVehicle bikeTransportationVehicle) {
         this.bikeTransportationVehicle = bikeTransportationVehicle;
     }
 

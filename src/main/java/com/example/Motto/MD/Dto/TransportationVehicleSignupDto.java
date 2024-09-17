@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record BikeVehicleSignUpDto(
+public record TransportationVehicleSignupDto(
         @NotBlank(message = "Manufacturer Year is required.")
         @NotNull(message = "Manufacturer Year must not be Null.")
-        @Size(min = 4, max = 4, message = "Invalid manufacture year, keep it between 4 and 4 digits")
+        @Size(min = 4, max = 4, message = "Invalid manufacture year, keep it between {min} and {max} characters")
         @JsonProperty("manufactureYear")
         String manufactureYear,
         @NotBlank(message = "Model Name is required.")
@@ -19,5 +19,11 @@ public record BikeVehicleSignUpDto(
         @NotNull(message = "Bike Plate Number must not be Null.")
         @Size(min = 8, max = 8, message = "Invalid plate number, Accepted formats are: ABC-1234")
         @JsonProperty("plateNumber")
-        String plateNumber) {
+        String plateNumber,
+        @NotBlank(message = "Vehicle Type is required.")
+        @NotNull(message = "Vehicle Type must not be Null.")
+        @Size(min = 4, max = 10, message = "Invalid vehicle type, keep it between {min} and {max} characters")
+        @JsonProperty("vehicleType")
+        String vehicleType
+        ) {
 }
