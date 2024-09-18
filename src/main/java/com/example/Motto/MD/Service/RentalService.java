@@ -5,6 +5,7 @@ import com.example.Motto.MD.Entity.*;
 import com.example.Motto.MD.Repository.RentalRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,4 +31,13 @@ public class RentalService {
         rentalRepository.save(newRental);
         return newRental;
     }
+
+    public List<Rental> getAllRentals(){
+        return rentalRepository.findAll();
+    }
+
+    public Optional<Rental> getRentalById(Long id){
+        return rentalRepository.findById(id);
+    }
+
 }
