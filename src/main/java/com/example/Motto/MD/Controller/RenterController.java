@@ -3,6 +3,7 @@ package com.example.Motto.MD.Controller;
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
 import com.example.Motto.MD.Dto.RenterResponseDto;
 import com.example.Motto.MD.Dto.RenterSignUpDto;
+import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Service.RenterService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatusCode;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/v1/renters")
+@RequestMapping("/api/v1/renters")
 public class RenterController {
 
     RenterService renterService;
@@ -45,20 +46,20 @@ public class RenterController {
 
     @GetMapping("/{cnhNumber}")
     public ResponseEntity<?> getRenterByCnhNumber(@Valid @PathVariable String cnhNumber) {
-        Optional<RenterResponseDto> renter = renterService.findByCnhNumber(cnhNumber);
+        Optional<Renter> renter = renterService.getRenterByCnhNumber(cnhNumber);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(renter.get());
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(RenterResponseDto.fromEntity(renter.get()));
     }
 
     @PostMapping("/{cnhNumber}/update-cnh-image")
     public ResponseEntity<?> changeCnhImage(@PathVariable String cnhNumber, @Valid @ModelAttribute CnhImageExchangeDto cnhImageExchange) {
-        Optional<?> renter = renterService.changeCnhImage(cnhNumber, cnhImageExchange);
+        Optional<Renter> renter = renterService.changeCnhImage(cnhNumber, cnhImageExchange);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(renter.get());
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(RenterResponseDto.fromEntity(renter.get()));
     }
 
     @DeleteMapping("/{cnhNumber}/remove")

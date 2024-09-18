@@ -1,6 +1,6 @@
 package com.example.Motto.MD.Service;
 
-import com.example.Motto.MD.Dto.UpdateTransportationVehicleDto;
+import com.example.Motto.MD.Dto.UpdateVehicleDto;
 import com.example.Motto.MD.Dto.VehicleResponseDto;
 import com.example.Motto.MD.Dto.VehicleSignUpDto;
 import com.example.Motto.MD.Entity.Vehicle;
@@ -37,15 +37,11 @@ public class VehicleService {
         return allTransportationVehicles.stream().map(VehicleResponseDto::fromEntity).collect(Collectors.toList());
     }
 
-    public Optional<?> getTransportationVehicleByPlateNumber(String plateNumber) {
-        Optional<? extends Vehicle> optionalTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
-        if(optionalTransportationVehicle.isEmpty()){
-            return Optional.empty();
-        }
-        return Optional.of(VehicleResponseDto.fromEntity(optionalTransportationVehicle.get()));
+    public Optional<Vehicle> getVehicleByPlateNumber(String plateNumber) {
+        return Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
     }
 
-    public Optional<?> updateTransportationVehicleByPlateNumber(String plateNumber, UpdateTransportationVehicleDto updatedBikeTransportationVehicle) {
+    public Optional<?> updateTransportationVehicleByPlateNumber(String plateNumber, UpdateVehicleDto updatedBikeTransportationVehicle) {
         Optional<Vehicle> optionalTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
         if(optionalTransportationVehicle.isEmpty()){
             return Optional.empty();

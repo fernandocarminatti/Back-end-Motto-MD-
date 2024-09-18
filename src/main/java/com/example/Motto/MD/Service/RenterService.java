@@ -49,15 +49,11 @@ public class RenterService {
         return allRenters.stream().map(RenterResponseDto::fromEntity).collect(Collectors.toList());
     }
 
-    public Optional<RenterResponseDto> findByCnhNumber(String cnhNumber) {
-        Renter renter = renterRepository.findByCnhNumber(cnhNumber);
-        if(renter == null){
-            return Optional.empty();
-        }
-        return Optional.of(RenterResponseDto.fromEntity(renter));
+    public Optional<Renter> getRenterByCnhNumber(String cnhNumber) {
+        return Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
     }
 
-    public Optional<?> changeCnhImage(String cnhNumber, CnhImageExchangeDto cnhImageExchange) {
+    public Optional<Renter> changeCnhImage(String cnhNumber, CnhImageExchangeDto cnhImageExchange) {
         Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
         if(renter.isEmpty()){
             return renter;
@@ -68,7 +64,7 @@ public class RenterService {
         String fileUploadPath = storageService.storeFile(cnhImageExchange.cnhImage().get(0), renter.get().getCnhNumber());
         renter.get().setCnhImage(fileUploadPath);
         renterRepository.save(renter.get());
-        return Optional.of(RenterResponseDto.fromEntity(renter.get()));
+        return renter;
     }
 
     public boolean deleteRenter(String cnhNumber) {

@@ -20,7 +20,7 @@ public class VehicleFactory {
                         vehicleSignUpDto.plateNumber().toUpperCase()
                 );
             default:
-                throw new HttpMessageNotReadableException("Invalid vehicle type");
+                throw new IllegalArgumentException("Invalid vehicle type");
         }
     }
 }

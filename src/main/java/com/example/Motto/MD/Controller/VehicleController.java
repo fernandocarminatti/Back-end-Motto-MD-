@@ -1,6 +1,6 @@
 package com.example.Motto.MD.Controller;
 
-import com.example.Motto.MD.Dto.UpdateTransportationVehicleDto;
+import com.example.Motto.MD.Dto.UpdateVehicleDto;
 import com.example.Motto.MD.Dto.VehicleResponseDto;
 import com.example.Motto.MD.Dto.VehicleSignUpDto;
 import com.example.Motto.MD.Service.VehicleService;
@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/v1/vehicles")
-public class TransportationVehicleController {
+@RequestMapping("/api/v1/vehicles")
+public class VehicleController {
 
     VehicleService vehicleService;
 
-    public TransportationVehicleController(VehicleService vehicleService) {
+    public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 
@@ -41,7 +41,7 @@ public class TransportationVehicleController {
 
     @GetMapping("/{plateNumber}")
     public ResponseEntity<?> getTargetTransportationVehicle(@PathVariable String plateNumber) {
-        Optional<?> targetTransportationVehicle = vehicleService.getTransportationVehicleByPlateNumber(plateNumber);
+        Optional<?> targetTransportationVehicle = vehicleService.getVehicleByPlateNumber(plateNumber);
         if(targetTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
@@ -49,7 +49,7 @@ public class TransportationVehicleController {
     }
 
     @PatchMapping("/{plateNumber}")
-    public ResponseEntity<?> updateTransportationVehicle(@PathVariable String plateNumber,@Valid @RequestBody UpdateTransportationVehicleDto updatedPlateNumber) {
+    public ResponseEntity<?> updateTransportationVehicle(@PathVariable String plateNumber,@Valid @RequestBody UpdateVehicleDto updatedPlateNumber) {
         Optional<?> updatedEntity = vehicleService.updateTransportationVehicleByPlateNumber(plateNumber, updatedPlateNumber);
         if (updatedEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();

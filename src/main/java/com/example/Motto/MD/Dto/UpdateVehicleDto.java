@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record UpdateTransportationVehicleDto(
+public record UpdateVehicleDto(
         @JsonProperty("plateNumber")
         @NotNull(message = "Plate Number must not be Null.")
         @NotBlank(message = "Plate Number is required.")
