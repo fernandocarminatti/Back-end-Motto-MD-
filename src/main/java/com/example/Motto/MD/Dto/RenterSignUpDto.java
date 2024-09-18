@@ -21,7 +21,7 @@ public record RenterSignUpDto(
         String cnhNumber,
         @JsonProperty("cnhType")
         @NotNull(message = "CNH Type is required.")
-        @Pattern(regexp = "^(A|B|AB)$", message = "CNH Type must be A, B or AB.")
+        @Pattern(regexp = "^(A|B|AB|C|D)$", message = "CNH Type must be A, B, AB, C or D")
         String cnhType,
         @JsonProperty("cnhImage")
         @NotNull(message = "CNH Image is required. Supported formats are jpg and bmp.")
