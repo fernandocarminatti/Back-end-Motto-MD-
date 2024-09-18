@@ -11,13 +11,9 @@ public record RenterSignUpDto(
         @JsonProperty("name")
         @NotBlank(message = "Person Name is required.")
         String name,
-        @JsonProperty("cnpj")
-        @NotBlank(message = "CNPJ is required.")
-        @Size(min = 14, max = 18, message = "CNPJ must be between {min} and {max} characters. You could use XX.XXX.XXX/0000X-X format.")
-        String cnpj,
         @JsonProperty("birthDate")
         @NotNull(message = "Birth Date is required. You could use YYYY-MM-DD format.")
-        @Size(min = 10, max = 10, message = "Birth Date must be between {min} and {max} characters. You could user YYYY-MM-DD format.")
+        @Size(min = 10, max = 10, message = "Birth Date must be between {min} and {max} characters. You should use YYYY-MM-DD format.")
         String birthDate,
         @JsonProperty("cnhNumber")
         @NotBlank(message = "CNH Number is required.")

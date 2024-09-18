@@ -15,8 +15,6 @@ public class Renter {
     private Long id;
 
     private String name;
-    @Column(nullable = false, length = 18)
-    private String cnpj;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -28,14 +26,10 @@ public class Renter {
     @Column(name = "cnh_image")
     private String cnhImage;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private TransportationVehicle bikeTransportationVehicle;
-
     public Renter(){};
 
-    public Renter(String name, String cnpj, LocalDate birthDate, String cnhNumber, CnhType cnhType, String cnhImage) {
+    public Renter(String name, LocalDate birthDate, String cnhNumber, CnhType cnhType, String cnhImage) {
         this.name = name;
-        this.cnpj = cnpj;
         this.birthDate = birthDate;
         this.cnhNumber = cnhNumber;
         this.cnhType = cnhType;
@@ -52,14 +46,6 @@ public class Renter {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
     }
 
     public LocalDate getBirthDate() {
@@ -94,27 +80,15 @@ public class Renter {
         this.cnhImage = cnhImage;
     }
 
-    public TransportationVehicle getBikeTransportationVehicle() {
-        return bikeTransportationVehicle;
-    }
-
-    public void setBikeTransportationVehicle(TransportationVehicle bikeTransportationVehicle) {
-        this.bikeTransportationVehicle = bikeTransportationVehicle;
-    }
-
-    public boolean hasActiveRental(){
-        return bikeTransportationVehicle != null;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Renter renter)) return false;
-        return Objects.equals(id, renter.id) && Objects.equals(name, renter.name) && Objects.equals(cnpj, renter.cnpj) && Objects.equals(birthDate, renter.birthDate) && Objects.equals(cnhType, renter.cnhType) && Objects.equals(cnhImage, renter.cnhImage) && Objects.equals(bikeTransportationVehicle, renter.bikeTransportationVehicle);
+        return Objects.equals(id, renter.id) && Objects.equals(name, renter.name) && Objects.equals(birthDate, renter.birthDate) && Objects.equals(cnhNumber, renter.cnhNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, cnpj, birthDate);
+        return Objects.hash(id, name, birthDate, cnhNumber);
     }
 }

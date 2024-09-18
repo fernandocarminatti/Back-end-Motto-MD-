@@ -35,7 +35,6 @@ public class RenterService {
         String fileUploadPath = storageService.storeFile(renterSignUp.cnhImage(), renterSignUp.cnhNumber());
         Renter newRenter = new Renter(
                 renterSignUp.name(),
-                renterSignUp.cnpj(),
                 LocalDate.parse(renterSignUp.birthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 renterSignUp.cnhNumber(),
                 CnhType.valueOf(renterSignUp.cnhType().toUpperCase()),
@@ -74,15 +73,11 @@ public class RenterService {
 
     public boolean deleteRenter(String cnhNumber) {
         Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
-        if(renter.isEmpty() || renter.get().hasActiveRental()){
+        if(renter.isEmpty()){
             return false;
         } else {
             renterRepository.delete(renter.get());
             return true;
         }
-    }
-
-    protected Optional<Renter> getByCnhNumber(String cnhNumber){
-        return Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
     }
 }
