@@ -53,4 +53,8 @@ public abstract class Vehicle {
     public void setPlateNumber(String plateNumber) {
         this.plateNumber = plateNumber;
     }
+
+    public String getVehicleType() {
+        return this.getClass().getSimpleName();
+    }
 }

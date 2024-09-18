@@ -3,6 +3,7 @@ package com.example.Motto.MD.Service;
 import com.example.Motto.MD.Dto.*;
 import com.example.Motto.MD.Entity.TransportationVehicle;
 import com.example.Motto.MD.Entity.Vehicle;
+import com.example.Motto.MD.Entity.VehicleFactory;
 import com.example.Motto.MD.Repository.TransportationVehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,25 +16,19 @@ import java.util.stream.Collectors;
 public class TransportationVehicleService {
 
     TransportationVehicleRepository transportationVehicleRepository;
-    RenterService renterService;
 
-    public TransportationVehicleService(TransportationVehicleRepository transportationVehicleRepository, RenterService renterService) {
+    public TransportationVehicleService(TransportationVehicleRepository transportationVehicleRepository) {
         this.transportationVehicleRepository = transportationVehicleRepository;
-        this.renterService = renterService;
     }
 
     @Transactional
-    public Optional<VehicleResponseDto> createTransportationVehicle(TransportationVehicleSignupDto transportationVehicleSignupDto)  {
-        boolean vehicleChecker = transportationVehicleRepository.existsByPlateNumber(transportationVehicleSignupDto.plateNumber());
-        if(vehicleChecker){
+    public Optional<VehicleResponseDto> createTransportationVehicle(VehicleSignUpDto vehicleSignUpDto)  {
+        if(transportationVehicleRepository.existsByPlateNumber(vehicleSignUpDto.plateNumber().toUpperCase())){
             return Optional.empty();
         }
-        TransportationVehicle transportationVehicle = new TransportationVehicle(
-                transportationVehicleSignupDto.manufactureYear(),
-                transportationVehicleSignupDto.model(),
-                transportationVehicleSignupDto.plateNumber().toUpperCase());
-        transportationVehicleRepository.save(transportationVehicle);
-        return Optional.of(VehicleResponseDto.fromEntity(transportationVehicle));
+        Vehicle customVehicle = VehicleFactory.createVehicle(vehicleSignUpDto);
+        transportationVehicleRepository.save(customVehicle);
+        return Optional.of(VehicleResponseDto.fromEntity(customVehicle));
     }
 
     public List<VehicleResponseDto> getAllTransportationVehicles() {
@@ -50,7 +45,7 @@ public class TransportationVehicleService {
     }
 
     public Optional<?> updateTransportationVehicleByPlateNumber(String plateNumber, UpdateTransportationVehicleDto updatedBikeTransportationVehicle) {
-        Optional<TransportationVehicle> optionalTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
+        Optional<Vehicle> optionalTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
         if(optionalTransportationVehicle.isEmpty()){
             return Optional.empty();
         }
@@ -61,7 +56,7 @@ public class TransportationVehicleService {
     }
 
     public boolean deleteTransportationVehicle(String plateNumber) {
-        Optional<TransportationVehicle> optionalBikeTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
+        Optional<Vehicle> optionalBikeTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
         if(optionalBikeTransportationVehicle.isEmpty() || !optionalBikeTransportationVehicle.get().isAvailable()){
             return false;
         }
