@@ -1,23 +1,22 @@
 package com.example.Motto.MD.Entity;
 
-import com.example.Motto.MD.Dto.VehicleSignUpDto;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import com.example.Motto.MD.Dto.CreateVehicleDto;
 
 public class VehicleFactory {
 
-    public static Vehicle createVehicle(VehicleSignUpDto vehicleSignUpDto) {
-        switch (vehicleSignUpDto.vehicleType()) {
+    public static Vehicle createVehicle(CreateVehicleDto createVehicleDto) {
+        switch (createVehicleDto.vehicleType()) {
             case 1:
                 return new BikeVehicle(
-                        vehicleSignUpDto.manufactureYear(),
-                        vehicleSignUpDto.model(),
-                        vehicleSignUpDto.plateNumber().toUpperCase()
+                        createVehicleDto.manufactureYear(),
+                        createVehicleDto.model(),
+                        createVehicleDto.plateNumber().toUpperCase()
                 );
             case 3:
                 return new TransportationVehicle(
-                        vehicleSignUpDto.manufactureYear(),
-                        vehicleSignUpDto.model(),
-                        vehicleSignUpDto.plateNumber().toUpperCase()
+                        createVehicleDto.manufactureYear(),
+                        createVehicleDto.model(),
+                        createVehicleDto.plateNumber().toUpperCase()
                 );
             default:
                 throw new IllegalArgumentException("Invalid vehicle type");

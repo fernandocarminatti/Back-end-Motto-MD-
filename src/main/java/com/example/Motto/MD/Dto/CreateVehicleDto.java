@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.Range;
 
-public record VehicleSignUpDto(
+public record CreateVehicleDto(
         @Range(min = 1, max = 3, message = "Invalid vehicle type. Accepted values are: 1 - BIKE, 2 - CAR, 3 - TRANSPORTATION")
         @JsonProperty("vehicleType")
         int vehicleType,

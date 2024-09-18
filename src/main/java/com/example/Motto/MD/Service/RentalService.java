@@ -25,9 +25,9 @@ public class RentalService {
         Optional<Vehicle> vehicle = vehicleService.getVehicleByPlateNumber(createRentalDto.vehiclePlateNumber());
         Optional<Renter> renter = renterService.getRenterByCnhNumber(createRentalDto.renterCnhNumber());
         if(vehicle.isEmpty() || renter.isEmpty()){
-            return new TransportationVehicleRental(null, null);
+            return new TransportationVehicleRental(null, null, null);
         }
-        Rental newRental = RentalFactory.createRental(vehicle.get(), renter.get());
+        Rental newRental = RentalFactory.createRental(vehicle.get(), renter.get(), createRentalDto.rentalPeriod());
         rentalRepository.save(newRental);
         return newRental;
     }

@@ -2,7 +2,7 @@ package com.example.Motto.MD.Service;
 
 import com.example.Motto.MD.Dto.UpdateVehicleDto;
 import com.example.Motto.MD.Dto.VehicleResponseDto;
-import com.example.Motto.MD.Dto.VehicleSignUpDto;
+import com.example.Motto.MD.Dto.CreateVehicleDto;
 import com.example.Motto.MD.Entity.Vehicle;
 import com.example.Motto.MD.Entity.VehicleFactory;
 import com.example.Motto.MD.Repository.VehicleRepository;
@@ -23,11 +23,11 @@ public class VehicleService {
     }
 
     @Transactional
-    public Optional<VehicleResponseDto> createTransportationVehicle(VehicleSignUpDto vehicleSignUpDto)  {
-        if (vehicleRepository.existsByPlateNumber(vehicleSignUpDto.plateNumber().toUpperCase())) {
+    public Optional<VehicleResponseDto> createTransportationVehicle(CreateVehicleDto createVehicleDto)  {
+        if (vehicleRepository.existsByPlateNumber(createVehicleDto.plateNumber().toUpperCase())) {
             return Optional.empty();
         }
-        Vehicle customVehicle = VehicleFactory.createVehicle(vehicleSignUpDto);
+        Vehicle customVehicle = VehicleFactory.createVehicle(createVehicleDto);
         vehicleRepository.save(customVehicle);
         return Optional.of(VehicleResponseDto.fromEntity(customVehicle));
     }

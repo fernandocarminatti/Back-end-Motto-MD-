@@ -17,6 +17,8 @@ public abstract class Rental {
     @OneToOne
     private Renter renter;
     private LocalDate createdAt;
+    private LocalDate startDate;
+    private LocalDate dueDate;
 
     public Long getId() {
         return id;
@@ -50,6 +52,22 @@ public abstract class Rental {
         this.createdAt = createdAt;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
     @Override
     public String toString() {
         return "Rental{" +
@@ -57,7 +75,8 @@ public abstract class Rental {
                 ", vehicle=" + vehicle +
                 ", renter=" + renter +
                 ", createdAt=" + createdAt +
+                ", startDate=" + startDate +
+                ", dueDate=" + dueDate +
                 '}';
     }
-
 }

@@ -11,11 +11,13 @@ public class BikeRental extends Rental {
 
     public BikeRental(){}
 
-    public BikeRental(Vehicle vehicle, Renter renter) {
+    public BikeRental(Vehicle vehicle, Renter renter, String rentalPeriod) {
         super();
         setVehicle(vehicle);
         setRenter(renter);
         setCreatedAt(LocalDate.now());
+        setStartDate(getCreatedAt().plusDays(1));
+        setDueDate(getStartDate().plusDays(Integer.parseInt(rentalPeriod)));
     }
 
 }

@@ -2,7 +2,7 @@ package com.example.Motto.MD.Service;
 
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
 import com.example.Motto.MD.Dto.RenterResponseDto;
-import com.example.Motto.MD.Dto.RenterSignUpDto;
+import com.example.Motto.MD.Dto.CreateRenterDto;
 import com.example.Motto.MD.Entity.CnhType;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Repository.RenterRepository;
@@ -27,7 +27,7 @@ public class RenterService {
         this.storageService = storageService;
     }
 
-    public Optional<RenterResponseDto> createRenter(RenterSignUpDto renterSignUp) {
+    public Optional<RenterResponseDto> createRenter(CreateRenterDto renterSignUp) {
         boolean renter = renterRepository.checkIfRenterExistsByCnhNumber(renterSignUp.cnhNumber());
         if(renter){
             return Optional.empty();

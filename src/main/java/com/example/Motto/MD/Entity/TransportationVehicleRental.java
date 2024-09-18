@@ -10,11 +10,13 @@ public class TransportationVehicleRental extends Rental {
 
     public TransportationVehicleRental(){}
 
-    public TransportationVehicleRental(Vehicle vehicle, Renter renter) {
+    public TransportationVehicleRental(Vehicle vehicle, Renter renter, String rentalPeriod) {
         super();
         setVehicle(vehicle);
         setRenter(renter);
         setCreatedAt(LocalDate.now());
+        setStartDate(getCreatedAt().plusDays(1));
+        setDueDate(getStartDate().plusDays(Integer.parseInt(rentalPeriod)));
     }
 
 }

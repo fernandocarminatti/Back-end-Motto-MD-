@@ -2,7 +2,7 @@ package com.example.Motto.MD.Controller;
 
 import com.example.Motto.MD.Dto.UpdateVehicleDto;
 import com.example.Motto.MD.Dto.VehicleResponseDto;
-import com.example.Motto.MD.Dto.VehicleSignUpDto;
+import com.example.Motto.MD.Dto.CreateVehicleDto;
 import com.example.Motto.MD.Service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatusCode;
@@ -25,12 +25,12 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTransportationVehicle(@RequestBody @Valid VehicleSignUpDto vehicleSignUpDto) {
-        Optional<?> bikeTransportationVehicle = vehicleService.createTransportationVehicle(vehicleSignUpDto);
+    public ResponseEntity<?> createTransportationVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
+        Optional<?> bikeTransportationVehicle = vehicleService.createTransportationVehicle(createVehicleDto);
         if(bikeTransportationVehicle.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/v1/bikes/" + vehicleSignUpDto.plateNumber())).body("{ \n Error: Bike Transportation Vehicle already exists \n}");
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/v1/bikes/" + createVehicleDto.plateNumber())).body("{ \n Error: Bike Transportation Vehicle already exists \n}");
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/bikes/" + vehicleSignUpDto.plateNumber())).body(bikeTransportationVehicle.get());
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/bikes/" + createVehicleDto.plateNumber())).body(bikeTransportationVehicle.get());
     }
 
     @GetMapping

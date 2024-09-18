@@ -2,7 +2,7 @@ package com.example.Motto.MD.Controller;
 
 import com.example.Motto.MD.Dto.CnhImageExchangeDto;
 import com.example.Motto.MD.Dto.RenterResponseDto;
-import com.example.Motto.MD.Dto.RenterSignUpDto;
+import com.example.Motto.MD.Dto.CreateRenterDto;
 import com.example.Motto.MD.Entity.Renter;
 import com.example.Motto.MD.Service.RenterService;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public class RenterController {
     }
 
     @PostMapping( consumes = "multipart/form-data" )
-    public ResponseEntity<?> createRenter(@Valid @ModelAttribute RenterSignUpDto renterSignUp) {
+    public ResponseEntity<?> createRenter(@Valid @ModelAttribute CreateRenterDto renterSignUp) {
         Optional<RenterResponseDto> renter = renterService.createRenter(renterSignUp);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(409))
