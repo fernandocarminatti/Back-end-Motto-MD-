@@ -55,9 +55,4 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatusCode.valueOf(413)).body(e.getMessage());
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    protected ResponseEntity<String> handleRuntimeException(RuntimeException e) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(500)).body(e.getMessage());
-    }
-
 }

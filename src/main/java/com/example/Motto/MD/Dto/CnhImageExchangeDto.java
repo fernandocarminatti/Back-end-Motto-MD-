@@ -7,15 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public record CnhImageExchangeDto(
-
         @JsonProperty("cnhImage")
-        @NotNull(message = "CNH Image is required. Supported formats are jpg and bmp.")
         List<MultipartFile> cnhImage) {
-
         public CnhImageExchangeDto {
+                if(cnhImage == null){
+                        throw new IllegalArgumentException("CNH Image is required.");
+                }
                 if(cnhImage.size() != 1){
                         throw new IllegalArgumentException("Only one CNH Image is allowed.");
                 }
         }
-
 }
