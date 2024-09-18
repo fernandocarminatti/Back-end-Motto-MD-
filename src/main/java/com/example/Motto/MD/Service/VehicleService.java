@@ -1,10 +1,11 @@
 package com.example.Motto.MD.Service;
 
-import com.example.Motto.MD.Dto.*;
-import com.example.Motto.MD.Entity.TransportationVehicle;
+import com.example.Motto.MD.Dto.UpdateTransportationVehicleDto;
+import com.example.Motto.MD.Dto.VehicleResponseDto;
+import com.example.Motto.MD.Dto.VehicleSignUpDto;
 import com.example.Motto.MD.Entity.Vehicle;
 import com.example.Motto.MD.Entity.VehicleFactory;
-import com.example.Motto.MD.Repository.TransportationVehicleRepository;
+import com.example.Motto.MD.Repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,31 +14,31 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class TransportationVehicleService {
+public class VehicleService {
 
-    TransportationVehicleRepository transportationVehicleRepository;
+    VehicleRepository vehicleRepository;
 
-    public TransportationVehicleService(TransportationVehicleRepository transportationVehicleRepository) {
-        this.transportationVehicleRepository = transportationVehicleRepository;
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
     @Transactional
     public Optional<VehicleResponseDto> createTransportationVehicle(VehicleSignUpDto vehicleSignUpDto)  {
-        if(transportationVehicleRepository.existsByPlateNumber(vehicleSignUpDto.plateNumber().toUpperCase())){
+        if (vehicleRepository.existsByPlateNumber(vehicleSignUpDto.plateNumber().toUpperCase())) {
             return Optional.empty();
         }
         Vehicle customVehicle = VehicleFactory.createVehicle(vehicleSignUpDto);
-        transportationVehicleRepository.save(customVehicle);
+        vehicleRepository.save(customVehicle);
         return Optional.of(VehicleResponseDto.fromEntity(customVehicle));
     }
 
     public List<VehicleResponseDto> getAllTransportationVehicles() {
-        List<? extends Vehicle> allTransportationVehicles = transportationVehicleRepository.findAll();
+        List<? extends Vehicle> allTransportationVehicles = vehicleRepository.findAll();
         return allTransportationVehicles.stream().map(VehicleResponseDto::fromEntity).collect(Collectors.toList());
     }
 
     public Optional<?> getTransportationVehicleByPlateNumber(String plateNumber) {
-        Optional<? extends Vehicle> optionalTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
+        Optional<? extends Vehicle> optionalTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
         if(optionalTransportationVehicle.isEmpty()){
             return Optional.empty();
         }
@@ -45,22 +46,22 @@ public class TransportationVehicleService {
     }
 
     public Optional<?> updateTransportationVehicleByPlateNumber(String plateNumber, UpdateTransportationVehicleDto updatedBikeTransportationVehicle) {
-        Optional<Vehicle> optionalTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
+        Optional<Vehicle> optionalTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
         if(optionalTransportationVehicle.isEmpty()){
             return Optional.empty();
         }
         optionalTransportationVehicle.get().setPlateNumber(updatedBikeTransportationVehicle.plateNumber().toUpperCase());
-        transportationVehicleRepository.save(optionalTransportationVehicle.get());
+        vehicleRepository.save(optionalTransportationVehicle.get());
 
         return Optional.of(VehicleResponseDto.fromEntity(optionalTransportationVehicle.get()));
     }
 
     public boolean deleteTransportationVehicle(String plateNumber) {
-        Optional<Vehicle> optionalBikeTransportationVehicle = Optional.ofNullable(transportationVehicleRepository.findByPlateNumber(plateNumber));
+        Optional<Vehicle> optionalBikeTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
         if(optionalBikeTransportationVehicle.isEmpty() || !optionalBikeTransportationVehicle.get().isAvailable()){
             return false;
         }
-        transportationVehicleRepository.delete(optionalBikeTransportationVehicle.get());
+        vehicleRepository.delete(optionalBikeTransportationVehicle.get());
         return true;
     }
 }

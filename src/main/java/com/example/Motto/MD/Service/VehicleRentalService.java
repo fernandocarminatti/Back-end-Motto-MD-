@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 public class VehicleRentalService {
 
     VehicleRentalRepository vehicleRentalRepository;
-    TransportationVehicleService transportationVehicleService;
+    VehicleService vehicleService;
     RenterService renterService;
 
-    public VehicleRentalService(VehicleRentalRepository vehicleRentalRepository, TransportationVehicleService transportationVehicleService, RenterService renterService) {
+    public VehicleRentalService(VehicleRentalRepository vehicleRentalRepository, VehicleService vehicleService, RenterService renterService) {
         this.vehicleRentalRepository = vehicleRentalRepository;
-        this.transportationVehicleService = transportationVehicleService;
+        this.vehicleService = vehicleService;
         this.renterService = renterService;
     }
 
