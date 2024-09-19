@@ -30,11 +30,11 @@ public class RenterController {
         Optional<RenterResponseDto> renter = renterService.createRenter(renterSignUp);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(409))
-                    .location(URI.create("/v1/renters/" + renterSignUp.cnhNumber()))
-                    .body("{ \n Error: Renter already exists \n}");
+                    .location(URI.create("/api/v1/renters" + renterSignUp.cnhNumber()))
+                    .build();
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(201))
-                .location(URI.create("/v1/renters/" + renterSignUp.cnhNumber()))
+                .location(URI.create("/api/v1/renters" + renterSignUp.cnhNumber()))
                 .body(renter.get());
     }
 
@@ -65,10 +65,7 @@ public class RenterController {
     @DeleteMapping("/{cnhNumber}/remove")
     public ResponseEntity<?> deleteRenter(@Valid @PathVariable String cnhNumber) {
         boolean deleted = renterService.deleteRenter(cnhNumber);
-        if(deleted){
-            return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
-        }
-        return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Not Found or in a Rental Service \n}");
+        return ResponseEntity.status(HttpStatusCode.valueOf(deleted ? 200 : 400)).build();
     }
 
 }

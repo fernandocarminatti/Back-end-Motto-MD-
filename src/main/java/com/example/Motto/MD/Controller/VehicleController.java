@@ -3,6 +3,7 @@ package com.example.Motto.MD.Controller;
 import com.example.Motto.MD.Dto.UpdateVehicleDto;
 import com.example.Motto.MD.Dto.VehicleResponseDto;
 import com.example.Motto.MD.Dto.CreateVehicleDto;
+import com.example.Motto.MD.Entity.Vehicle;
 import com.example.Motto.MD.Service.VehicleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatusCode;
@@ -26,17 +27,17 @@ public class VehicleController {
 
     @PostMapping
     public ResponseEntity<?> createTransportationVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
-        Optional<?> bikeTransportationVehicle = vehicleService.createTransportationVehicle(createVehicleDto);
-        if(bikeTransportationVehicle.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/v1/bikes/" + createVehicleDto.plateNumber())).body("{ \n Error: Bike Transportation Vehicle already exists \n}");
+        Optional<Vehicle> vehicle = vehicleService.createTransportationVehicle(createVehicleDto);
+        if(vehicle.isEmpty()){
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/api/v1/vehicles" + createVehicleDto.plateNumber())).body("Error: Vehicle already exists");
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/v1/bikes/" + createVehicleDto.plateNumber())).body(bikeTransportationVehicle.get());
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/vehicles" + createVehicleDto.plateNumber())).body(VehicleResponseDto.fromEntity(vehicle.get()));
     }
 
     @GetMapping
     public ResponseEntity<?> getAllTransportationVehicles() {
-        List<VehicleResponseDto> allBikeTransportationVehicles = vehicleService.getAllTransportationVehicles();
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(allBikeTransportationVehicles);
+        List<VehicleResponseDto> allVehicles = vehicleService.getAllTransportationVehicles().stream().map(VehicleResponseDto::fromEntity).toList();
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(allVehicles);
     }
 
     @GetMapping("/{plateNumber}")
@@ -63,7 +64,7 @@ public class VehicleController {
         if(deleted){
             return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: Not Found or in a Rental Service \n}");
+        return ResponseEntity.status(HttpStatusCode.valueOf(404)).body("Error: Not Found or in a Rental Service");
     }
 
 }

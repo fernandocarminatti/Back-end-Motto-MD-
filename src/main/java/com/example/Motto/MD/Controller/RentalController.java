@@ -35,7 +35,7 @@ public class RentalController {
     public ResponseEntity<?> getRentalById(@PathVariable("id") Long id){
         Optional<Rental> rental = rentalService.getRentalById(id);
         if(rental.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(404)).body("{ \n Error: \n [Rental not found] \n }");
+            return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(RentalResponseDto.fromEntity(rental.get()));
     }
@@ -43,9 +43,6 @@ public class RentalController {
     @PostMapping("/rent")
     public ResponseEntity<?> createRental(@Valid @RequestBody CreateRentalDto createRentalDto){
         Optional<Rental> rentalCreated = rentalService.createRental(createRentalDto);
-        if (rentalCreated.isEmpty() || rentalCreated.get().getRenter() == null || rentalCreated.get().getVehicle() == null) {
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).body("{ \n Error: \n [Invalid Vehicle or Renter. Check if Vehicle and Renter exist.] \n }");
-        }
         return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/rentals/" + rentalCreated.get().getId())).body(RentalResponseDto.fromEntity(rentalCreated.get()));
     }
 

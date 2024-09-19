@@ -23,18 +23,17 @@ public class VehicleService {
     }
 
     @Transactional
-    public Optional<VehicleResponseDto> createTransportationVehicle(CreateVehicleDto createVehicleDto)  {
+    public Optional<Vehicle> createTransportationVehicle(CreateVehicleDto createVehicleDto)  {
         if (vehicleRepository.existsByPlateNumber(createVehicleDto.plateNumber().toUpperCase())) {
             return Optional.empty();
         }
         Vehicle customVehicle = VehicleFactory.createVehicle(createVehicleDto);
         vehicleRepository.save(customVehicle);
-        return Optional.of(VehicleResponseDto.fromEntity(customVehicle));
+        return Optional.of(customVehicle);
     }
 
-    public List<VehicleResponseDto> getAllTransportationVehicles() {
-        List<? extends Vehicle> allTransportationVehicles = vehicleRepository.findAll();
-        return allTransportationVehicles.stream().map(VehicleResponseDto::fromEntity).collect(Collectors.toList());
+    public List<Vehicle> getAllTransportationVehicles() {
+        return vehicleRepository.findAll();
     }
 
     public Optional<Vehicle> getVehicleByPlateNumber(String plateNumber) {
