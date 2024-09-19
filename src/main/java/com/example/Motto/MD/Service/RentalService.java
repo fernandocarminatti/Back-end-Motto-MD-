@@ -4,6 +4,7 @@ import com.example.Motto.MD.Dto.CreateRentalDto;
 import com.example.Motto.MD.Entity.*;
 import com.example.Motto.MD.Repository.RentalRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,15 +22,23 @@ public class RentalService {
         this.renterService = renterService;
     }
 
-    public Rental createRental(CreateRentalDto createRentalDto) {
+    public Optional<Rental> createRental(CreateRentalDto createRentalDto) {
         Optional<Vehicle> vehicle = vehicleService.getVehicleByPlateNumber(createRentalDto.vehiclePlateNumber());
         Optional<Renter> renter = renterService.getRenterByCnhNumber(createRentalDto.renterCnhNumber());
         if(vehicle.isEmpty() || renter.isEmpty()){
-            return new TransportationVehicleRental(null, null, null);
+            throw new IllegalArgumentException("Invalid Vehicle or Renter. Check if Vehicle and Renter exist.");
+        }
+        boolean validRenter = rentalRepository.existsByRenterId(renter.get().getId());
+        if(validRenter){
+            throw new IllegalArgumentException("Seems there is already a Rental for this Renter. Current Rental limit is 1 per CNH Number.");
         }
         Rental newRental = RentalFactory.createRental(vehicle.get(), renter.get(), createRentalDto.rentalPeriod());
         rentalRepository.save(newRental);
-        return newRental;
+
+        vehicle.get().setAvailable(false);
+        vehicleService.updateVehicleStatus(vehicle.get());
+
+        return Optional.of(newRental);
     }
 
     public List<Rental> getAllRentals(){

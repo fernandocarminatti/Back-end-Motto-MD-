@@ -5,4 +5,5 @@ import com.example.Motto.MD.Entity.TransportationVehicleRental;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RentalRepository extends JpaRepository<Rental, Long> {
+    boolean existsByRenterId(Long id);
 }

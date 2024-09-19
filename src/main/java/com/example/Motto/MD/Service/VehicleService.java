@@ -60,4 +60,9 @@ public class VehicleService {
         vehicleRepository.delete(optionalBikeTransportationVehicle.get());
         return true;
     }
+
+    public boolean updateVehicleStatus(Vehicle vehicle){
+        vehicleRepository.save(vehicle);
+        return true;
+    }
 }

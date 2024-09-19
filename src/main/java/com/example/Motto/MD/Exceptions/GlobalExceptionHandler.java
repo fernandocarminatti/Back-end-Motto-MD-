@@ -18,8 +18,12 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(e.getMessage());
+    protected ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException e) {
+        Map<String, Object> errorsReturn = new HashMap<>();
+        List<String> errorList = new ArrayList<>();
+        errorList.add(e.getMessage());
+        errorsReturn.put("Reasons: ", errorList);
+        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(errorsReturn);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -33,7 +37,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     private ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(Map.of("Reason: ", "Invalid JSON Structure."));
+        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(Map.of("Error: ", "Invalid JSON Structure."));
     }
 
     @ExceptionHandler(StorageException.class)

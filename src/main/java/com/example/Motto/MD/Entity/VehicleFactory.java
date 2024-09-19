@@ -12,6 +12,12 @@ public class VehicleFactory {
                         createVehicleDto.model(),
                         createVehicleDto.plateNumber().toUpperCase()
                 );
+            case 2:
+                return new CarVehicle(
+                        createVehicleDto.manufactureYear(),
+                        createVehicleDto.model(),
+                        createVehicleDto.plateNumber().toUpperCase()
+                );
             case 3:
                 return new TransportationVehicle(
                         createVehicleDto.manufactureYear(),

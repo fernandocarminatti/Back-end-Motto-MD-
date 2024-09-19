@@ -7,11 +7,11 @@ import java.time.LocalDate;
 
 @Entity
 @DiscriminatorValue("BIKE")
-public class BikeRental extends Rental {
+public class BikeVehicleRental extends Rental {
 
-    public BikeRental(){}
+    public BikeVehicleRental(){}
 
-    public BikeRental(Vehicle vehicle, Renter renter, String rentalPeriod) {
+    public BikeVehicleRental(Vehicle vehicle, Renter renter, String rentalPeriod) {
         super();
         setVehicle(vehicle);
         setRenter(renter);
