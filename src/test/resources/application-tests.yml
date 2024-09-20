@@ -13,7 +13,6 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.h2.Driver
     platform: hibernate.dialect.H2Dialect
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,11 +20,3 @@ spring:
     properties:
       hibernate:
         format_sql: false
-
-server:
-  port: 8080
-
-logging:
-  level:
-    root: INFO
-    org.hibernate.SQL: DEBUG

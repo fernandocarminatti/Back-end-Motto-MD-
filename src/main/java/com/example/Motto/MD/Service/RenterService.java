@@ -28,7 +28,7 @@ public class RenterService {
     }
 
     public Optional<RenterResponseDto> createRenter(CreateRenterDto renterSignUp) {
-        boolean renter = renterRepository.checkIfRenterExistsByCnhNumber(renterSignUp.cnhNumber());
+        boolean renter = renterRepository.existsByCnhNumber(renterSignUp.cnhNumber());
         if(renter){
             return Optional.empty();
         }
