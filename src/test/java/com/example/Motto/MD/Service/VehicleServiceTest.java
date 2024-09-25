@@ -139,4 +139,14 @@ class VehicleServiceTest {
         assertFalse(deleted);
     }
 
+    @Test
+    @DisplayName("Should not delete a Vehicle that does not exist")
+    void testDeleteVehicleNotFound() {
+        when(this.vehicleRepository.findByPlateNumber("ZZZ0Z00")).thenReturn(null);
+
+        boolean deleted = vehicleService.deleteVehicle("ZZZ0Z00");
+
+        assertFalse(deleted);
+    }
+
 }
