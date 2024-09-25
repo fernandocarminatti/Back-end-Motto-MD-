@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class VehicleService {
@@ -23,7 +22,7 @@ public class VehicleService {
     }
 
     @Transactional
-    public Optional<Vehicle> createTransportationVehicle(CreateVehicleDto createVehicleDto)  {
+    public Optional<Vehicle> createVehicle(CreateVehicleDto createVehicleDto)  {
         if (vehicleRepository.existsByPlateNumber(createVehicleDto.plateNumber().toUpperCase())) {
             return Optional.empty();
         }
@@ -32,7 +31,7 @@ public class VehicleService {
         return Optional.of(customVehicle);
     }
 
-    public List<Vehicle> getAllTransportationVehicles() {
+    public List<Vehicle> getAllVehicles() {
         return vehicleRepository.findAll();
     }
 
@@ -40,23 +39,23 @@ public class VehicleService {
         return Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
     }
 
-    public Optional<?> updateTransportationVehicleByPlateNumber(String plateNumber, UpdateVehicleDto updatedBikeTransportationVehicle) {
-        Optional<Vehicle> optionalTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
-        if(optionalTransportationVehicle.isEmpty()){
+    public Optional<VehicleResponseDto> updateVehicleByPlateNumber(String plateNumber, UpdateVehicleDto updatedBikeTransportationVehicle) {
+        Optional<Vehicle> optionalVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
+        if(optionalVehicle.isEmpty()){
             return Optional.empty();
         }
-        optionalTransportationVehicle.get().setPlateNumber(updatedBikeTransportationVehicle.plateNumber().toUpperCase());
-        vehicleRepository.save(optionalTransportationVehicle.get());
+        optionalVehicle.get().setPlateNumber(updatedBikeTransportationVehicle.plateNumber().toUpperCase());
+        vehicleRepository.save(optionalVehicle.get());
 
-        return Optional.of(VehicleResponseDto.fromEntity(optionalTransportationVehicle.get()));
+        return Optional.of(VehicleResponseDto.fromEntity(optionalVehicle.get()));
     }
 
-    public boolean deleteTransportationVehicle(String plateNumber) {
-        Optional<Vehicle> optionalBikeTransportationVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
-        if(optionalBikeTransportationVehicle.isEmpty() || !optionalBikeTransportationVehicle.get().isAvailable()){
+    public boolean deleteVehicle(String plateNumber) {
+        Optional<Vehicle> optionalVehicle = Optional.ofNullable(vehicleRepository.findByPlateNumber(plateNumber));
+        if(optionalVehicle.isEmpty() || !optionalVehicle.get().isAvailable()){
             return false;
         }
-        vehicleRepository.delete(optionalBikeTransportationVehicle.get());
+        vehicleRepository.delete(optionalVehicle.get());
         return true;
     }
 

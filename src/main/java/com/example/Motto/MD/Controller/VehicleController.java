@@ -1,8 +1,8 @@
 package com.example.Motto.MD.Controller;
 
+import com.example.Motto.MD.Dto.CreateVehicleDto;
 import com.example.Motto.MD.Dto.UpdateVehicleDto;
 import com.example.Motto.MD.Dto.VehicleResponseDto;
-import com.example.Motto.MD.Dto.CreateVehicleDto;
 import com.example.Motto.MD.Entity.Vehicle;
 import com.example.Motto.MD.Service.VehicleService;
 import jakarta.validation.Valid;
@@ -26,8 +26,8 @@ public class VehicleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTransportationVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
-        Optional<Vehicle> vehicle = vehicleService.createTransportationVehicle(createVehicleDto);
+    public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
+        Optional<Vehicle> vehicle = vehicleService.createVehicle(createVehicleDto);
         if(vehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/api/v1/vehicles" + createVehicleDto.plateNumber())).body("Error: Vehicle already exists");
         }
@@ -35,13 +35,13 @@ public class VehicleController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTransportationVehicles() {
-        List<VehicleResponseDto> allVehicles = vehicleService.getAllTransportationVehicles().stream().map(VehicleResponseDto::fromEntity).toList();
+    public ResponseEntity<?> getAllVehicles() {
+        List<VehicleResponseDto> allVehicles = vehicleService.getAllVehicles().stream().map(VehicleResponseDto::fromEntity).toList();
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(allVehicles);
     }
 
     @GetMapping("/{plateNumber}")
-    public ResponseEntity<?> getTargetTransportationVehicle(@PathVariable String plateNumber) {
+    public ResponseEntity<?> getTargetVehicle(@PathVariable String plateNumber) {
         Optional<?> targetTransportationVehicle = vehicleService.getVehicleByPlateNumber(plateNumber);
         if(targetTransportationVehicle.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
@@ -50,8 +50,8 @@ public class VehicleController {
     }
 
     @PatchMapping("/{plateNumber}")
-    public ResponseEntity<?> updateTransportationVehicle(@PathVariable String plateNumber,@Valid @RequestBody UpdateVehicleDto updatedPlateNumber) {
-        Optional<?> updatedEntity = vehicleService.updateTransportationVehicleByPlateNumber(plateNumber, updatedPlateNumber);
+    public ResponseEntity<?> updateVehicle(@PathVariable String plateNumber, @Valid @RequestBody UpdateVehicleDto updatedPlateNumber) {
+        Optional<?> updatedEntity = vehicleService.updateVehicleByPlateNumber(plateNumber, updatedPlateNumber);
         if (updatedEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
@@ -59,8 +59,8 @@ public class VehicleController {
     }
 
     @DeleteMapping("/{plateNumber}/remove")
-    public ResponseEntity<?> deleteTransportationVehicle(@PathVariable String plateNumber) {
-        boolean deleted = vehicleService.deleteTransportationVehicle(plateNumber);
+    public ResponseEntity<?> deleteVehicle(@PathVariable String plateNumber) {
+        boolean deleted = vehicleService.deleteVehicle(plateNumber);
         if(deleted){
             return ResponseEntity.status(HttpStatusCode.valueOf(200)).build();
         }
