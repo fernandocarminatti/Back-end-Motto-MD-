@@ -29,9 +29,9 @@ public class VehicleController {
     public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
         Optional<Vehicle> vehicle = vehicleService.createVehicle(createVehicleDto);
         if(vehicle.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/api/v1/vehicles" + createVehicleDto.plateNumber())).body("Error: Vehicle already exists");
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/api/v1/vehicles/" + createVehicleDto.plateNumber())).body("Error: Vehicle already exists");
         }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/vehicles" + createVehicleDto.plateNumber())).body(VehicleResponseDto.fromEntity(vehicle.get()));
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/vehicles/" + createVehicleDto.plateNumber())).body(VehicleResponseDto.fromEntity(vehicle.get()));
     }
 
     @GetMapping
