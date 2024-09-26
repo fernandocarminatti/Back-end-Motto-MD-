@@ -27,7 +27,7 @@ public class RenterController {
 
     @PostMapping( consumes = "multipart/form-data" )
     public ResponseEntity<?> createRenter(@Valid @ModelAttribute CreateRenterDto renterSignUp) {
-        Optional<RenterResponseDto> renter = renterService.createRenter(renterSignUp);
+        Optional<Renter> renter = renterService.createRenter(renterSignUp);
         if(renter.isEmpty()){
             return ResponseEntity.status(HttpStatusCode.valueOf(409))
                     .location(URI.create("/api/v1/renters" + renterSignUp.cnhNumber()))
@@ -35,13 +35,14 @@ public class RenterController {
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(201))
                 .location(URI.create("/api/v1/renters" + renterSignUp.cnhNumber()))
-                .body(renter.get());
+                .body(RenterResponseDto.fromEntity(renter.get()));
     }
 
     @GetMapping()
     public ResponseEntity<?> getAllRenters() {
-        List<RenterResponseDto> allRenters = renterService.getAllRenters();
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(allRenters);
+        List<Renter> allRenters = renterService.getAllRenters();
+        List<RenterResponseDto> allRentersResponseDto = allRenters.stream().map(RenterResponseDto::fromEntity).toList();
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(allRentersResponseDto);
     }
 
     @GetMapping("/{cnhNumber}")

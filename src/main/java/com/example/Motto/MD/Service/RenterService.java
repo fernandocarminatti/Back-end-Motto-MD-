@@ -27,7 +27,7 @@ public class RenterService {
         this.storageService = storageService;
     }
 
-    public Optional<RenterResponseDto> createRenter(CreateRenterDto renterSignUp) {
+    public Optional<Renter> createRenter(CreateRenterDto renterSignUp) {
         boolean renter = renterRepository.existsByCnhNumber(renterSignUp.cnhNumber());
         if(renter){
             return Optional.empty();
@@ -41,12 +41,11 @@ public class RenterService {
                 fileUploadPath
         );
         renterRepository.save(newRenter);
-        return Optional.of(RenterResponseDto.fromEntity(newRenter));
+        return Optional.of(newRenter);
     }
 
-    public List<RenterResponseDto> getAllRenters() {
-        List<Renter> allRenters = renterRepository.findAll();
-        return allRenters.stream().map(RenterResponseDto::fromEntity).collect(Collectors.toList());
+    public List<Renter> getAllRenters() {
+        return renterRepository.findAll();
     }
 
     public Optional<Renter> getRenterByCnhNumber(String cnhNumber) {
