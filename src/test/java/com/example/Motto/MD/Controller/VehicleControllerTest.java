@@ -57,7 +57,6 @@ class VehicleControllerTest {
                         .content(objectMapper.writeValueAsString(createVehicleDto))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -78,7 +77,6 @@ class VehicleControllerTest {
                         .content(objectMapper.writeValueAsString(createVehicleDto))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -104,7 +102,6 @@ class VehicleControllerTest {
                         .content(objectNode.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
@@ -126,7 +123,6 @@ class VehicleControllerTest {
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
 
