@@ -16,7 +16,7 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
           cache: 'maven'
-      - name: Build, run unit and integration tests
+      - name: Run Tests
         run: |
           chmod +x mvnw
-          ./mvnw build
+          ./mvnw test
