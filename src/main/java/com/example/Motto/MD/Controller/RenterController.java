@@ -16,26 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/v1/renters")
+@RequestMapping("/api/v1/renter")
 public class RenterController {
 
     RenterService renterService;
 
     public RenterController(RenterService renterService) {
         this.renterService = renterService;
-    }
-
-    @PostMapping( consumes = "multipart/form-data" )
-    public ResponseEntity<?> createRenter(@Valid @ModelAttribute CreateRenterDto renterSignUp) {
-        Optional<Renter> renter = renterService.createRenter(renterSignUp);
-        if(renter.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409))
-                    .location(URI.create("/api/v1/renters" + renterSignUp.cnhNumber()))
-                    .build();
-        }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201))
-                .location(URI.create("/api/v1/renters" + renterSignUp.cnhNumber()))
-                .body(RenterResponseDto.fromEntity(renter.get()));
     }
 
     @GetMapping()
@@ -52,6 +39,19 @@ public class RenterController {
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(RenterResponseDto.fromEntity(renter.get()));
+    }
+
+    @PostMapping( consumes = "multipart/form-data" )
+    public ResponseEntity<?> createRenter(@Valid @ModelAttribute CreateRenterDto renterSignUp) {
+        Optional<Renter> renter = renterService.createRenter(renterSignUp);
+        if(renter.isEmpty()){
+            return ResponseEntity.status(HttpStatusCode.valueOf(409))
+                    .location(URI.create("/api/v1/renter" + renterSignUp.cnhNumber()))
+                    .build();
+        }
+        return ResponseEntity.status(HttpStatusCode.valueOf(201))
+                .location(URI.create("/api/v1/renter" + renterSignUp.cnhNumber()))
+                .body(RenterResponseDto.fromEntity(renter.get()));
     }
 
     @PostMapping("/{cnhNumber}/update-cnh-image")

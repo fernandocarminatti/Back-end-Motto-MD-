@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/v1/rentals")
+@RequestMapping("/api/v1/rental")
 public class RentalController {
 
     RentalService rentalService;
@@ -43,7 +43,7 @@ public class RentalController {
     @PostMapping("/rent")
     public ResponseEntity<?> createRental(@Valid @RequestBody CreateRentalDto createRentalDto){
         Optional<Rental> rentalCreated = rentalService.createRental(createRentalDto);
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/rentals/" + rentalCreated.get().getId())).body(RentalResponseDto.fromEntity(rentalCreated.get()));
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/rental/" + rentalCreated.get().getId())).body(RentalResponseDto.fromEntity(rentalCreated.get()));
     }
 
 }

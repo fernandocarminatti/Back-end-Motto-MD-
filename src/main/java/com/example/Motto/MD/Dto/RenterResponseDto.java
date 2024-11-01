@@ -6,7 +6,7 @@ import com.example.Motto.MD.Entity.Renter;
 
 import java.util.Map;
 
-public record RenterResponseDto(long id, String name, String birthDate, String CnhNumber, CnhType cnhType, String CnhImage) {
+public record RenterResponseDto(long id, String name, String birthDate, String cnhNumber, CnhType cnhType, String cnhImage) {
 
     public static RenterResponseDto fromEntity(Renter renter) {
         return new RenterResponseDto(

@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "dfabf7d2-d754-424f-89d6-ecd2069f218e",
+		"name": "Rental Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36279020"
+	},
+	"item": [
+		{
+			"name": "Rental",
+			"item": [
+				{
+					"name": "All Rentals",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/rental"
+					},
+					"response": []
+				},
+				{
+					"name": "Single Rental",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/rental/1"
+					},
+					"response": []
+				},
+				{
+					"name": "New Rental",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/rental/rent"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicle",
+			"item": [
+				{
+					"name": "All Vehicle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/vehicle"
+					},
+					"response": []
+				},
+				{
+					"name": "Single Vehicle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/vehicle/MHA8888"
+					},
+					"response": []
+				},
+				{
+					"name": "New Vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicleType\":1,\n    \"manufactureYear\":\"2002\",\n    \"model\":\"TestModel\",\n    \"plateNumber\":\"MHA8888\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/vehicle"
+					},
+					"response": []
+				},
+				{
+					"name": "Update PlateNumber",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicleType\":1,\n    \"manufactureYear\":\"2002\",\n    \"model\":\"TestModel\",\n    \"plateNumber\":\"MHA8888\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/vehicle/MHA8888"
+					},
+					"response": []
+				},
+				{
+					"name": "Remove PlateNumber",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicleType\":1,\n    \"manufactureYear\":\"2002\",\n    \"model\":\"TestModel\",\n    \"plateNumber\":\"MHA8888\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/api/v1/vehicle/MHA8888/remove"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Renter",
+			"item": [
+				{
+					"name": "All Renter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/api/v1/renter"
+					},
+					"response": []
+				},
+				{
+					"name": "New Renter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "DummyName",
+									"type": "text"
+								},
+								{
+									"key": "birthDate",
+									"value": "2000-01-01",
+									"type": "text"
+								},
+								{
+									"key": "cnhNumber",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "cnhType",
+									"value": "AB",
+									"type": "text"
+								},
+								{
+									"key": "cnhImage",
+									"type": "file",
+									"src": "/home/frnd/Downloads/dummy3.bmp"
+								}
+							]
+						},
+						"url": "http://localhost:8080/api/v1/renter"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Renter",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "DummyName",
+									"type": "text"
+								},
+								{
+									"key": "birthDate",
+									"value": "2000-01-01",
+									"type": "text"
+								},
+								{
+									"key": "cnhNumber",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "cnhType",
+									"value": "AB",
+									"type": "text"
+								},
+								{
+									"key": "cnhImage",
+									"type": "file",
+									"src": "/home/frnd/Downloads/dummy3.bmp"
+								}
+							]
+						},
+						"url": "http://localhost:8080/api/v1/renter/123456789/remove"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

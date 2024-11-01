@@ -14,7 +14,11 @@ import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
-    private final Path IMAGE_DIR = Paths.get("src", "main", "Uploads");
+    private final Path IMAGE_DIR = Paths.get("Uploads");
+
+    FileSystemStorageService(){
+        init();
+    }
 
     @Override
     public void init() {
@@ -32,7 +36,7 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("File is empty");
         }
         try(InputStream inputStream = file.getInputStream()){
-            Path filePath = Paths.get(IMAGE_DIR.toString(), fileName + dumbFileFormatCheck(file.getOriginalFilename())).normalize().toAbsolutePath();
+            Path filePath = Paths.get(IMAGE_DIR.toString(), fileName + dumbFileFormatCheck(file.getOriginalFilename()));
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             return filePath.toString();
         } catch (IOException e) {

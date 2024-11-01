@@ -16,22 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/v1/vehicles")
+@RequestMapping("/api/v1/vehicle")
 public class VehicleController {
 
     VehicleService vehicleService;
 
     public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
-        Optional<Vehicle> vehicle = vehicleService.createVehicle(createVehicleDto);
-        if(vehicle.isEmpty()){
-            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/api/v1/vehicles/" + createVehicleDto.plateNumber())).body("Error: Vehicle already exists");
-        }
-        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/vehicles/" + createVehicleDto.plateNumber())).body(VehicleResponseDto.fromEntity(vehicle.get()));
     }
 
     @GetMapping
@@ -47,6 +38,15 @@ public class VehicleController {
             return ResponseEntity.status(HttpStatusCode.valueOf(404)).build();
         }
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(targetTransportationVehicle.get());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createVehicle(@RequestBody @Valid CreateVehicleDto createVehicleDto) {
+        Optional<Vehicle> vehicle = vehicleService.createVehicle(createVehicleDto);
+        if(vehicle.isEmpty()){
+            return ResponseEntity.status(HttpStatusCode.valueOf(409)).location(URI.create("/api/v1/vehicle/" + createVehicleDto.plateNumber())).body("Error: Vehicle already exists");
+        }
+        return ResponseEntity.status(HttpStatusCode.valueOf(201)).location(URI.create("/api/v1/vehicle/" + createVehicleDto.plateNumber())).body(VehicleResponseDto.fromEntity(vehicle.get()));
     }
 
     @PatchMapping("/{plateNumber}")
