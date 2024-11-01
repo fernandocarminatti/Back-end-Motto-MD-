@@ -70,9 +70,9 @@ public class RenterService {
         Optional<Renter> renter = Optional.ofNullable(renterRepository.findByCnhNumber(cnhNumber));
         if(renter.isEmpty()){
             return false;
-        } else {
-            renterRepository.delete(renter.get());
-            return true;
         }
+        renterRepository.delete(renter.get());
+        storageService.deleteFile(renter.get().getCnhImage());
+        return true;
     }
 }

@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
-    private final Path IMAGE_DIR = Paths.get("Uploads");
+    private Path IMAGE_DIR;
 
     FileSystemStorageService(){
         init();
@@ -23,7 +23,7 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void init() {
         try {
-            Files.createDirectories(IMAGE_DIR);
+            this.IMAGE_DIR = Files.createDirectories(Paths.get("src/Uploads"));
         }
         catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
@@ -55,9 +55,9 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void deleteFile(String fileName) {
+    public void deleteFile(String path) {
         try {
-            Files.deleteIfExists(IMAGE_DIR.resolve(fileName));
+            Files.deleteIfExists(Paths.get(path));
         } catch (IOException e) {
             throw new StorageException("Error while deleting file", e);
         }
