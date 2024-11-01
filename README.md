@@ -1,15 +1,7 @@
-COPIED FROM A PUBLIC REPOSITORY BUT FEELS LIKE IT SHOULD HAVE BEEN SET TO PRIVATE
-EDITED FOR ORIGINAL JUST FOR LEARNING PURPOSES.
+COPY FROM A PUBLIC REPOSITORY. MAYBE THAT REPOSITORY WAS MEANT TO BE PRIVATE.
+EDITED FROM ORIGINAL JUST FOR LEARNING PURPOSES.
 
-Desafio backend Motto.MD.
-
-Seja muito bem-vindo ao desafio backend da Motto.MD, obrigado pelo interesse em fazer parte do nosso time e ajudar a melhorar a vida de milhares de pessoas.
-Instruções
-
-O desafio é válido para diversos níveis, portanto não se preocupe se não conseguir resolver por completo.
-A aplicação só será avaliada se estiver rodando, se necessário crie um passo a passo para isso.
-Faça um clone do repositório em seu git pessoal para iniciar o desenvolvimento e não cite nada relacionado a Motto.MD.
-Após finalização envie um e-mail para o recrutador informando o repositório para análise.
+Desafio backend MottoMD.
 
 Aplicação a ser desenvolvida
 
@@ -29,7 +21,6 @@ USUÁRIO:
 - Eu como usuário admin quero remover uma moto que foi cadastrado incorretamente, desde que não tenha registro de locações.
 
  ENTREGADOR:
-
 - Eu como usuário entregador quero me cadastrar na plataforma para alugar motos.
 - Os dados do entregador são( identificador, nome, cnpj, data de nascimento, número da CNHh, tipo da CNH, imagemCNH)
 - Os tipos de cnh válidos são A, B ou ambas A+B.
@@ -53,19 +44,3 @@ USUÁRIO:
     - Para plano de 7 dias o valor da multa é de 20% sobre o valor das diárias não efetivadas.
     - Para plano de 15 dias o valor da multa é de 40% sobre o valor das diárias não efetivadas.
     - Quando a data informada for superior a data prevista do término, será cobrado um valor adicional de R$50,00 por diária adicional.
-
-
-Diferenciais 🚀:
-
-Testes unitários
-Testes de integração
-EntityFramework e/ou Dapper
-Docker e Docker Compose
-Design Patterns
-Documentação
-Tratamento de erros
-Arquitetura e modelagem de dados
-Código escrito em língua inglesa
-Código limpo e organizado
-Logs bem estruturados
-Seguir convenções utilizadas pela comunidade
